@@ -1,2 +1,872 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kaylyn Math Lab — 20 Weeks</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#111a33;
+      --card:#0f1730;
+      --muted:#a9b3d6;
+      --text:#eef2ff;
+      --accent:#6ee7ff;
+      --accent2:#a78bfa;
+      --good:#34d399;
+      --bad:#fb7185;
+      --warn:#fbbf24;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 5%, rgba(110,231,255,.18), transparent 65%),
+        radial-gradient(900px 500px at 85% 0%, rgba(167,139,250,.18), transparent 60%),
+        radial-gradient(900px 700px at 40% 100%, rgba(52,211,153,.10), transparent 55%),
+        var(--bg);
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:22px}
+    .hero{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 22px 22px 16px;
+      display:flex;
+      gap:18px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .title{
+      display:flex;flex-direction:column;gap:6px;min-width:280px
+    }
+    .title h1{margin:0;font-size:28px;letter-spacing:.2px}
+    .title p{margin:0;color:var(--muted);line-height:1.45}
+    .meta{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end
+    }
+    .pill{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      padding:8px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;gap:8px;align-items:center;
+    }
+    .pill strong{color:var(--text);font-weight:700}
+    .bar{
+      margin-top:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      height:12px;
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius:999px;
+      transition: width .35s ease;
+    }
+
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:16px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .sidebar, .main{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .sidebar-head{
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;gap:10px
+    }
+    .sidebar-head h2{margin:0;font-size:14px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+    .sidebar-head .btn{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:12px;
+    }
+    .list{
+      max-height: calc(100vh - 210px);
+      overflow:auto;
+      padding:10px;
+    }
+    .week-btn{
+      width:100%;
+      border:1px solid var(--border);
+      background: rgba(15,23,48,.65);
+      color:var(--text);
+      padding:12px 12px;
+      border-radius:14px;
+      text-align:left;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .week-btn:hover{transform: translateY(-1px); border-color: rgba(110,231,255,.35)}
+    .week-btn.active{border-color: rgba(167,139,250,.55); background: rgba(17,26,51,.85)}
+    .wk-left{display:flex;flex-direction:column;gap:4px}
+    .wk-left .wk-title{font-weight:800}
+    .wk-left .wk-sub{color:var(--muted);font-size:12px}
+    .wk-right{display:flex;gap:8px;align-items:center}
+    .badge{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--muted);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+    .badge.done{color: rgba(52,211,153,.95); border-color: rgba(52,211,153,.35)}
+    .badge.partial{color: rgba(251,191,36,.95); border-color: rgba(251,191,36,.35)}
+
+    .main{
+      padding:18px;
+    }
+    .card{
+      border:1px solid var(--border);
+      background: rgba(15,23,48,.6);
+      border-radius: var(--radius);
+      padding:16px;
+      margin-bottom:14px;
+    }
+    .card h3{margin:0 0 10px 0;font-size:18px}
+    .muted{color:var(--muted)}
+    .two{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 700px){ .two{grid-template-columns:1fr} }
+
+    .q{
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding:14px;
+      background: rgba(255,255,255,.03);
+    }
+    .q .qtop{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+    .q .prompt{font-weight:700}
+    .q small{color:var(--muted)}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+    input[type="text"], input[type="number"]{
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      outline:none;
+      min-width: 140px;
+    }
+    textarea{
+      width:100%;
+      min-height:88px;
+      resize:vertical;
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      outline:none;
+      margin-top:8px;
+    }
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      font-weight:700;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(110,231,255,.35)}
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(110,231,255,.18), rgba(167,139,250,.18));
+      border-color: rgba(110,231,255,.25);
+    }
+    .btn.ghost{background: transparent}
+    .feedback{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+    .feedback.good{border-color: rgba(52,211,153,.35); color: rgba(52,211,153,.95); background: rgba(52,211,153,.06)}
+    .feedback.bad{border-color: rgba(251,113,133,.35); color: rgba(251,113,133,.95); background: rgba(251,113,133,.06)}
+    .feedback.warn{border-color: rgba(251,191,36,.35); color: rgba(251,191,36,.95); background: rgba(251,191,36,.06)}
+    .hint{
+      margin-top:8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .footer-actions{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:10px
+    }
+    .tiny{font-size:12px;color:var(--muted)}
+    code{background:rgba(255,255,255,.06); padding:2px 6px; border-radius:8px; border:1px solid var(--border)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="title">
+      <h1>🧠 Kaylyn Math Lab</h1>
+      <p>
+        20 weeks · 1 session/week · instant checking + progress<br>
+        <span class="muted">Tip: For “explain” prompts, type an explanation—no single right answer.</span>
+      </p>
+    </div>
+    <div class="meta">
+      <div class="pill">Progress: <strong id="progressLabel">0/20</strong></div>
+      <div class="pill">Score: <strong id="scoreLabel">0</strong></div>
+      <button class="btn" id="resetBtn" title="Reset all progress (local to this browser)">Reset</button>
+    </div>
+    <div class="bar" style="flex-basis:100%"><div id="progressBar"></div></div>
+  </div>
+
+  <div class="grid">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2>Weeks</h2>
+        <button class="btn" id="journalBtn">Journal</button>
+      </div>
+      <div class="list" id="weekList"></div>
+    </aside>
+
+    <main class="main">
+      <div class="card">
+        <h3 id="wkHeader">Welcome</h3>
+        <div class="muted" id="wkIdea">Pick a week on the left.</div>
+      </div>
+
+      <div class="two" id="questions"></div>
+
+      <div class="card" id="explainCard" style="display:none">
+        <h3>✍️ Explain Your Thinking</h3>
+        <div class="muted">Write how you approached the problems. This builds “math brain” more than speed.</div>
+        <textarea id="explainBox" placeholder="Example: I started by..., then I noticed..., I got stuck when..., next time I would..."></textarea>
+        <div class="footer-actions">
+          <button class="btn primary" id="saveExplainBtn">Save explanation</button>
+          <div class="tiny" id="explainSaved">Not saved yet</div>
+        </div>
+      </div>
+
+      <div class="card" id="journalCard" style="display:none">
+        <h3>📓 Weekly Math Journal (10 min)</h3>
+        <div class="muted">Write 3 sentences. No grading. Just thinking.</div>
+        <textarea id="journalBox" placeholder="1) One hard thing…&#10;2) One surprise…&#10;3) One question I still have…"></textarea>
+        <div class="footer-actions">
+          <button class="btn primary" id="saveJournalBtn">Save journal</button>
+          <div class="tiny" id="journalSaved">Not saved yet</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tiny">
+          Works offline after first load. Progress saved in your browser via <code>localStorage</code>.
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  // ---------- Data model ----------
+  // Each week: title, idea, questions (2 auto-check), explainPrompt (text area)
+  // Question types:
+  //  - numericExact: exact number match
+  //  - numericAnyOf: answer matches one of options
+  //  - textContains: must contain keywords (simple auto-check)
+  //  - multi: multiple valid forms (basic normalization)
+  const course = [
+    {
+      title:"Week 1 — What Is a Number?",
+      idea:"Numbers are flexible objects. Build, break, and rebuild.",
+      questions:[
+        { id:"w1q1", type:"numericAnyOf", prompt:"How many different ways can you make 24? (Enter a number ≥ 6)",
+          hint:"Try +, −, ×, ÷. Example: 6×4, 20+4, 30−6, 48÷2, (3×4)+12, 2×3×4…",
+          answers:[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] },
+        { id:"w1q2", type:"textContains", prompt:"Make 24 using exactly 3 numbers. Type one valid expression (e.g., (8×3)×1).",
+          hint:"Examples: 6×4×1, (30−6)×1, (12+12)×1, (8×3)×1, (5+7)×2.",
+          keywords:["24"] }
+      ],
+      explain:"Explain: How did you start? How did you know you were done?"
+    },
+    {
+      title:"Week 2 — Patterns Are Rules",
+      idea:"Math is finding a rule that keeps working.",
+      questions:[
+        { id:"w2q1", type:"numericExact", prompt:"Pattern: 3 → 7 → 15 → 31 → ?  (Enter next number)",
+          hint:"Look for doubling + something.",
+          answer:63 },
+        { id:"w2q2", type:"textContains", prompt:"Create your own pattern with a rule. Type 5 numbers separated by commas.",
+          hint:"Example: 2, 5, 11, 23, 47 (rule: ×2 +1).",
+          keywords:[","] }
+      ],
+      explain:"Explain: What is your rule? How do you know it always works?"
+    },
+    {
+      title:"Week 3 — Logical Guessing",
+      idea:"Good guessing is organized elimination.",
+      questions:[
+        { id:"w3q1", type:"numericExact", prompt:"Number 1–50: even, divisible by 4, digit sum = 10. What is the number?",
+          hint:"List multiples of 4, then check digit sums.",
+          answer:28 },
+        { id:"w3q2", type:"numericAnyOf", prompt:"How many numbers between 1–50 satisfy all clues? (Enter 1, 2, or 3)",
+          hint:"Check all multiples of 4: 4,8,12,...,48.",
+          answers:[1] }
+      ],
+      explain:"Explain: Which clue did you use first and why?"
+    },
+    {
+      title:"Week 4 — Same Answer, Different Thinking",
+      idea:"Strong math = multiple approaches.",
+      questions:[
+        { id:"w4q1", type:"numericExact", prompt:"Compute: 48 ÷ 6 × 4",
+          hint:"Do ÷ and × left-to-right.",
+          answer:32 },
+        { id:"w4q2", type:"numericExact", prompt:"Compute: 36 × 25",
+          hint:"Try 25 = 100/4, so 36×25 = 36×100÷4.",
+          answer:900 }
+      ],
+      explain:"Explain two different ways you could do 36×25."
+    },
+    {
+      title:"Week 5 — Why Multiplication Works",
+      idea:"Distributive thinking makes big multiplication easy.",
+      questions:[
+        { id:"w5q1", type:"numericExact", prompt:"Compute using breaking: 23 × 17",
+          hint:"(20+3)(10+7) or 23×10 + 23×7",
+          answer:391 },
+        { id:"w5q2", type:"numericExact", prompt:"Compute: 6 × 14",
+          hint:"6×10 + 6×4",
+          answer:84 }
+      ],
+      explain:"Explain why breaking numbers works."
+    },
+    {
+      title:"Week 6 — Division as Undoing",
+      idea:"Division is reversing multiplication, with structure.",
+      questions:[
+        { id:"w6q1", type:"numericExact", prompt:"If 8 × □ = 96, what is □ ?",
+          hint:"Undo ×8 by ÷8.",
+          answer:12 },
+        { id:"w6q2", type:"numericExact", prompt:"Compute: 276 ÷ 4",
+          hint:"Split 276 into 200+76 or use long division.",
+          answer:69 }
+      ],
+      explain:"Write each step you used for 276 ÷ 4."
+    },
+    {
+      title:"Week 7 — Remainders & Cycles",
+      idea:"Remainders describe leftovers; cycles repeat.",
+      questions:[
+        { id:"w7q1", type:"numericExact", prompt:"Compute: 29 ÷ 5 remainder ? (Enter remainder only)",
+          hint:"5×5=25, leftover 4.",
+          answer:4 },
+        { id:"w7q2", type:"numericExact", prompt:"100 hours after noon is what time? (Use 12-hour clock, enter hour only: 1–12)",
+          hint:"100 mod 12 = 4.",
+          answer:4 }
+      ],
+      explain:"Explain what the remainder means in a real story."
+    },
+    {
+      title:"Week 8 — Estimation & Error",
+      idea:"Estimate first to sanity-check answers.",
+      questions:[
+        { id:"w8q1", type:"numericExact", prompt:"Estimate 49 × 21 by rounding (49→50, 21→20). Enter the estimate.",
+          hint:"50×20",
+          answer:1000 },
+        { id:"w8q2", type:"numericAnyOf", prompt:"Exact 49×21 = ? (Enter exact)",
+          hint:"49×20 + 49",
+          answers:[1029] }
+      ],
+      explain:"When is estimating better than exact?"
+    },
+    {
+      title:"Week 9 — Fractions Are Numbers",
+      idea:"Fractions live on number lines; closeness matters.",
+      questions:[
+        { id:"w9q1", type:"numericExact", prompt:"Which is closer to 1: 2/3 or 3/4? Enter 1 for 2/3, 2 for 3/4.",
+          hint:"Distance to 1: 1/3 vs 1/4.",
+          answer:2 },
+        { id:"w9q2", type:"numericExact", prompt:"Which is bigger: 2/3 or 1/2? Enter 1 for 2/3, 2 for 1/2.",
+          hint:"2/3 ≈ 0.666, 1/2 = 0.5",
+          answer:1 }
+      ],
+      explain:"Explain using a number line idea."
+    },
+    {
+      title:"Week 10 — Equivalent Fractions",
+      idea:"Same value, different form (scaling).",
+      questions:[
+        { id:"w10q1", type:"numericExact", prompt:"Simplify 4/6 to lowest terms. Enter numerator only.",
+          hint:"Divide top and bottom by 2.",
+          answer:2 },
+        { id:"w10q2", type:"numericExact", prompt:"Simplify 4/6 to lowest terms. Enter denominator only.",
+          hint:"Divide top and bottom by 2.",
+          answer:3 }
+      ],
+      explain:"Explain why multiplying top & bottom by same number keeps value."
+    },
+    {
+      title:"Week 11 — Compare Without Calculating",
+      idea:"Reason with closeness to 1, common sense, structure.",
+      questions:[
+        { id:"w11q1", type:"numericExact", prompt:"Which is bigger: 7/8 or 5/6? Enter 1 for 7/8, 2 for 5/6.",
+          hint:"Compare how far each is from 1: 1/8 vs 1/6.",
+          answer:1 },
+        { id:"w11q2", type:"numericExact", prompt:"Which is bigger: 3/5 or 2/3? Enter 1 for 3/5, 2 for 2/3.",
+          hint:"3/5=0.6, 2/3≈0.666",
+          answer:2 }
+      ],
+      explain:"Explain your comparison without cross-multiplying."
+    },
+    {
+      title:"Week 12 — Area Without Formulas",
+      idea:"Area is counting unit squares; shapes can trade perimeter for area.",
+      questions:[
+        { id:"w12q1", type:"numericExact", prompt:"A 6×4 rectangle has area = ?",
+          hint:"length×width",
+          answer:24 },
+        { id:"w12q2", type:"numericExact", prompt:"A 6×4 rectangle has perimeter = ?",
+          hint:"2(l+w)",
+          answer:20 }
+      ],
+      explain:"Can two shapes have same area but different perimeter? Give an example."
+    },
+    {
+      title:"Week 13 — Angles & Invariants",
+      idea:"Right angles, turning, and what stays the same.",
+      questions:[
+        { id:"w13q1", type:"numericExact", prompt:"How many degrees in a right angle?",
+          hint:"Quarter turn.",
+          answer:90 },
+        { id:"w13q2", type:"numericExact", prompt:"How many right angles make a full turn? (Enter count)",
+          hint:"Full turn is 360°.",
+          answer:4 }
+      ],
+      explain:"Find 3 right angles in your home and describe them."
+    },
+    {
+      title:"Week 14 — Visual Proofs",
+      idea:"Pictures can prove truths.",
+      questions:[
+        { id:"w14q1", type:"numericExact", prompt:"Compute: 3×4",
+          hint:"Array 3 by 4.",
+          answer:12 },
+        { id:"w14q2", type:"numericExact", prompt:"Compute: 4×3",
+          hint:"Array 4 by 3.",
+          answer:12 }
+      ],
+      explain:"Draw or describe a picture that shows why 3×4 equals 4×3."
+    },
+    {
+      title:"Week 15 — Unknowns & Balance",
+      idea:"Equality means both sides match.",
+      questions:[
+        { id:"w15q1", type:"numericExact", prompt:"Solve: □ + 17 = 45. Enter □.",
+          hint:"Undo +17 by −17.",
+          answer:28 },
+        { id:"w15q2", type:"numericExact", prompt:"Solve: □ − 9 = 12. Enter □.",
+          hint:"Undo −9 by +9.",
+          answer:21 }
+      ],
+      explain:"Explain what “balance” means in an equation."
+    },
+    {
+      title:"Week 16 — Functions as Machines",
+      idea:"Rules transform inputs to outputs.",
+      questions:[
+        { id:"w16q1", type:"numericExact", prompt:"Machine: ×3 then +2. If input is 4, output is ?",
+          hint:"4×3=12, +2=14",
+          answer:14 },
+        { id:"w16q2", type:"numericExact", prompt:"Same machine. If input is 10, output is ?",
+          hint:"10×3=30, +2=32",
+          answer:32 }
+      ],
+      explain:"Create your own machine (two steps) and test it with 2 inputs."
+    },
+    {
+      title:"Week 17 — One Idea, Many Views",
+      idea:"Same number can be shown multiple ways.",
+      questions:[
+        { id:"w17q1", type:"numericAnyOf", prompt:"Write a factor pair for 12. Enter one number from a pair (e.g., 3).",
+          hint:"Pairs: (1,12) (2,6) (3,4).",
+          answers:[1,2,3,4,6,12] },
+        { id:"w17q2", type:"numericExact", prompt:"How many different factor pairs does 12 have? (Enter count)",
+          hint:"(1,12),(2,6),(3,4)",
+          answer:3 }
+      ],
+      explain:"Show 12 as words, a small picture idea, and a table idea."
+    },
+    {
+      title:"Week 18 — One Hard Problem (Rectangles in a Grid)",
+      idea:"Depth beats speed. Record attempts.",
+      questions:[
+        { id:"w18q1", type:"numericExact", prompt:"In a 2×3 grid of small squares, how many rectangles total?",
+          hint:"Count all sizes: 1×1, 1×2, 1×3, 2×1, 2×2, 2×3.",
+          answer:18 },
+        { id:"w18q2", type:"numericExact", prompt:"In a 1×4 grid, how many rectangles total?",
+          hint:"It’s 4+3+2+1.",
+          answer:10 }
+      ],
+      explain:"Explain how you systematically counted rectangles."
+    },
+    {
+      title:"Week 19 — Teaching Math",
+      idea:"Teaching proves understanding.",
+      questions:[
+        { id:"w19q1", type:"textContains", prompt:"Type the topic you taught (example: fractions, remainders, patterns).",
+          hint:"Any topic is fine. Just type what you taught.",
+          keywords:[""] },
+        { id:"w19q2", type:"textContains", prompt:"Type one question your parent asked you, and your answer.",
+          hint:"Example: “Why did you do that step?” — “Because…”",
+          keywords:["?"] }
+      ],
+      explain:"What was hardest to explain? What helped?"
+    },
+    {
+      title:"Week 20 — Capstone (Create a Problem)",
+      idea:"Mathematicians create problems, not just solve them.",
+      questions:[
+        { id:"w20q1", type:"textContains", prompt:"Write your original problem statement (at least one sentence).",
+          hint:"Example: “A box has… How many…?”",
+          keywords:["."] },
+        { id:"w20q2", type:"textContains", prompt:"Write your solution/explanation (at least one sentence).",
+          hint:"Explain step-by-step.",
+          keywords:["."] }
+      ],
+      explain:"Why is your problem interesting or tricky?"
+    },
+  ];
+
+  // ---------- Storage ----------
+  const KEY = "kaylyn_math_lab_v1";
+  const defaultState = () => ({
+    currentWeekIndex: 0,
+    score: 0,
+    // answers per question id: { value, status: "correct"|"wrong"|"partial" }
+    q: {},
+    explain: {}, // week index -> text
+    journal: ""  // overall journal box
+  });
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(!raw) return defaultState();
+      const parsed = JSON.parse(raw);
+      return { ...defaultState(), ...parsed, q: parsed.q || {} };
+    }catch{
+      return defaultState();
+    }
+  }
+  function saveState(){
+    localStorage.setItem(KEY, JSON.stringify(state));
+  }
+
+  let state = loadState();
+
+  // ---------- Utilities ----------
+  function norm(s){
+    return String(s ?? "").trim();
+  }
+  function normExpr(s){
+    // Very light normalization for text entries
+    return norm(s).replace(/\s+/g,"").toLowerCase();
+  }
+  function isNumberLike(v){
+    if(v === "" || v === null || v === undefined) return false;
+    return !Number.isNaN(Number(v));
+  }
+
+  // ---------- Scoring & progress ----------
+  function computeWeekStatus(weekIdx){
+    const wk = course[weekIdx];
+    let correct = 0, answered = 0;
+    for(const q of wk.questions){
+      const entry = state.q[q.id];
+      if(entry && norm(entry.value) !== "") answered++;
+      if(entry && entry.status === "correct") correct++;
+    }
+    if(correct === wk.questions.length) return "done";
+    if(answered > 0) return "partial";
+    return "none";
+  }
+  function computeProgress(){
+    let done = 0;
+    for(let i=0;i<course.length;i++){
+      if(computeWeekStatus(i) === "done") done++;
+    }
+    return done;
+  }
+  function updateTopUI(){
+    const done = computeProgress();
+    document.getElementById("progressLabel").textContent = `${done}/${course.length}`;
+    document.getElementById("scoreLabel").textContent = `${state.score}`;
+    document.getElementById("progressBar").style.width = `${Math.round((done/course.length)*100)}%`;
+  }
+
+  // ---------- Render left list ----------
+  const weekList = document.getElementById("weekList");
+  function renderWeekList(){
+    weekList.innerHTML = "";
+    course.forEach((wk, idx) => {
+      const status = computeWeekStatus(idx);
+      const btn = document.createElement("button");
+      btn.className = "week-btn" + (idx === state.currentWeekIndex ? " active" : "");
+      btn.type = "button";
+
+      const left = document.createElement("div");
+      left.className = "wk-left";
+      left.innerHTML = `<div class="wk-title">${wk.title}</div><div class="wk-sub">${wk.idea}</div>`;
+
+      const right = document.createElement("div");
+      right.className = "wk-right";
+      const badge = document.createElement("div");
+      badge.className = "badge" + (status==="done" ? " done" : status==="partial" ? " partial" : "");
+      badge.textContent = status==="done" ? "✓ Done" : status==="partial" ? "In progress" : "Not started";
+      right.appendChild(badge);
+
+      btn.appendChild(left);
+      btn.appendChild(right);
+
+      btn.addEventListener("click", () => {
+        state.currentWeekIndex = idx;
+        saveState();
+        renderWeekList();
+        renderWeek(idx);
+      });
+
+      weekList.appendChild(btn);
+    });
+  }
+
+  // ---------- Render main content ----------
+  const questionsWrap = document.getElementById("questions");
+  const wkHeader = document.getElementById("wkHeader");
+  const wkIdea = document.getElementById("wkIdea");
+  const explainCard = document.getElementById("explainCard");
+  const explainBox = document.getElementById("explainBox");
+  const explainSaved = document.getElementById("explainSaved");
+
+  const journalCard = document.getElementById("journalCard");
+  const journalBox = document.getElementById("journalBox");
+  const journalSaved = document.getElementById("journalSaved");
+
+  function renderWeek(idx){
+    const wk = course[idx];
+    wkHeader.textContent = wk.title;
+    wkIdea.textContent = wk.idea;
+
+    // questions
+    questionsWrap.innerHTML = "";
+    wk.questions.forEach((q) => {
+      const entry = state.q[q.id] || { value:"", status:"" };
+
+      const el = document.createElement("div");
+      el.className = "q";
+
+      const qtop = document.createElement("div");
+      qtop.className = "qtop";
+
+      const left = document.createElement("div");
+      left.innerHTML = `<div class="prompt">${q.prompt}</div><small>${q.type.includes("text") ? "Type your answer." : "Enter a number."}</small>`;
+
+      const right = document.createElement("div");
+      right.className = "badge";
+      if(entry.status === "correct") { right.classList.add("done"); right.textContent = "✓ Correct"; }
+      else if(entry.status === "wrong") { right.style.borderColor="rgba(251,113,133,.35)"; right.style.color="rgba(251,113,133,.95)"; right.textContent = "Try again"; }
+      else if(entry.status === "partial") { right.classList.add("partial"); right.textContent = "Saved"; }
+      else { right.textContent = "—"; }
+
+      qtop.appendChild(left);
+      qtop.appendChild(right);
+
+      const row = document.createElement("div");
+      row.className = "row";
+
+      const input = document.createElement("input");
+      input.type = q.type.startsWith("numeric") ? "number" : "text";
+      input.placeholder = q.type.startsWith("numeric") ? "Enter number…" : "Type answer…";
+      input.value = entry.value ?? "";
+      input.addEventListener("input", () => {
+        // save as partial as they type
+        state.q[q.id] = { value: input.value, status: "partial" };
+        saveState();
+        renderWeekList();
+      });
+
+      const checkBtn = document.createElement("button");
+      checkBtn.className = "btn primary";
+      checkBtn.type = "button";
+      checkBtn.textContent = "Check";
+
+      const hintBtn = document.createElement("button");
+      hintBtn.className = "btn ghost";
+      hintBtn.type = "button";
+      hintBtn.textContent = "Hint";
+
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.style.display = "none";
+
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.style.display = "none";
+      hint.textContent = q.hint || "";
+
+      function setFeedback(kind, msg){
+        feedback.className = "feedback " + kind;
+        feedback.textContent = msg;
+        feedback.style.display = "block";
+      }
+
+      hintBtn.addEventListener("click", () => {
+        hint.style.display = (hint.style.display === "none") ? "block" : "none";
+      });
+
+      checkBtn.addEventListener("click", () => {
+        const v = input.value;
+        const result = checkAnswer(q, v);
+
+        if(result.correct){
+          // Only award points once per question
+          const prev = state.q[q.id];
+          const wasCorrect = prev && prev.status === "correct";
+          state.q[q.id] = { value: v, status: "correct" };
+          if(!wasCorrect) state.score += 10;
+
+          setFeedback("good", "Correct ✅");
+        } else {
+          state.q[q.id] = { value: v, status: "wrong" };
+          setFeedback("bad", result.message || "Not quite. Try again.");
+        }
+
+        saveState();
+        renderWeekList();
+        updateTopUI();
+        // refresh badge on this question by re-rendering week
+        renderWeek(state.currentWeekIndex);
+      });
+
+      row.appendChild(input);
+      row.appendChild(checkBtn);
+      row.appendChild(hintBtn);
+
+      el.appendChild(qtop);
+      el.appendChild(row);
+      el.appendChild(feedback);
+      el.appendChild(hint);
+
+      questionsWrap.appendChild(el);
+    });
+
+    // explanation
+    explainCard.style.display = "block";
+    const savedText = state.explain[idx] || "";
+    explainBox.value = savedText;
+    explainSaved.textContent = savedText ? "Saved ✓" : "Not saved yet";
+    explainSaved.style.color = savedText ? "rgba(52,211,153,.95)" : "var(--muted)";
+  }
+
+  function checkAnswer(q, raw){
+    if(q.type === "numericExact"){
+      if(!isNumberLike(raw)) return { correct:false, message:"Enter a number." };
+      const n = Number(raw);
+      return { correct: n === q.answer, message: `Expected ${q.answer}.` };
+    }
+    if(q.type === "numericAnyOf"){
+      if(!isNumberLike(raw)) return { correct:false, message:"Enter a number." };
+      const n = Number(raw);
+      return { correct: q.answers.includes(n), message:"Not in the accepted set." };
+    }
+    if(q.type === "textContains"){
+      const s = norm(raw);
+      if(!s) return { correct:false, message:"Type something." };
+      // If keywords is [""] then accept anything non-empty
+      if(q.keywords && q.keywords.length === 1 && q.keywords[0] === "") return { correct:true };
+      const lower = s.toLowerCase();
+      const ok = (q.keywords || []).every(k => lower.includes(String(k).toLowerCase()));
+      return { correct: ok, message:"Include the requested element (see hint)." };
+    }
+    if(q.type === "multi"){
+      const s = normExpr(raw);
+      if(!s) return { correct:false, message:"Type an answer." };
+      const ok = (q.answers || []).map(normExpr).includes(s);
+      return { correct: ok, message:"Try a different valid form." };
+    }
+    return { correct:false, message:"Unknown question type." };
+  }
+
+  // Save explain/journal
+  document.getElementById("saveExplainBtn").addEventListener("click", () => {
+    state.explain[state.currentWeekIndex] = explainBox.value;
+    saveState();
+    explainSaved.textContent = "Saved ✓";
+    explainSaved.style.color = "rgba(52,211,153,.95)";
+  });
+
+  document.getElementById("saveJournalBtn").addEventListener("click", () => {
+    state.journal = journalBox.value;
+    saveState();
+    journalSaved.textContent = "Saved ✓";
+    journalSaved.style.color = "rgba(52,211,153,.95)";
+  });
+
+  document.getElementById("journalBtn").addEventListener("click", () => {
+    journalCard.style.display = journalCard.style.display === "none" ? "block" : "none";
+    journalBox.value = state.journal || "";
+    journalSaved.textContent = (state.journal && state.journal.trim()) ? "Saved ✓" : "Not saved yet";
+    journalSaved.style.color = (state.journal && state.journal.trim()) ? "rgba(52,211,153,.95)" : "var(--muted)";
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if(!confirm("Reset all progress on this device/browser?")) return;
+    state = defaultState();
+    saveState();
+    renderWeekList();
+    renderWeek(state.currentWeekIndex);
+    updateTopUI();
+  });
+
+  // ---------- Init ----------
+  renderWeekList();
+  renderWeek(state.currentWeekIndex);
+  updateTopUI();
+</script>
+</body>
+</html>
 
 
