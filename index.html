@@ -2,103 +2,138 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kaylyn Math — Studio</title>
+<meta name="description" content="A beautiful, self-paced Grade 3+ math course with robust answer checking, mastery, daily practice, mini-quizzes, and visual models." />
+
 <style>
-  /* =========================
-     Studio Design System (v2)
-     - Apple-clean + vibrant accents
-  ========================== */
+  /* =========================================================
+     Kaylyn Math — Studio (Perfect Edition)
+     - Single-file, GitHub Pages friendly
+     - Apple-clean design, kid-friendly calm colors
+     ========================================================= */
+
   :root{
-    --bg0:#060816;
-    --bg1:#070a12;
+    /* Light theme default (Apple-ish) */
+    --bg0:#f6f8ff;
+    --bg1:#ffffff;
 
-    --panel:rgba(255,255,255,.075);
-    --panel2:rgba(255,255,255,.045);
-    --border:rgba(255,255,255,.12);
-    --shadow: 0 24px 70px rgba(0,0,0,.45);
+    --text:#0b1226;
+    --muted: rgba(11,18,38,.70);
+    --muted2: rgba(11,18,38,.52);
 
-    --text:#eef2ff;
-    --muted:rgba(238,242,255,.70);
-    --muted2:rgba(238,242,255,.52);
+    --panel: rgba(15,23,42,.055);
+    --panel2: rgba(15,23,42,.035);
+    --border: rgba(15,23,42,.10);
 
-    /* Accent palette */
-    --a1:#5eead4; /* mint */
-    --a2:#a78bfa; /* purple */
-    --a3:#60a5fa; /* blue */
-    --a4:#fb7185; /* pink */
-    --a5:#fbbf24; /* amber */
-    --good:#34d399;
-    --bad:#fb7185;
-    --warn:#fbbf24;
+    --shadow: 0 18px 50px rgba(2,6,23,.10);
+    --shadow2: 0 10px 30px rgba(2,6,23,.10);
+
+    /* Calm accents */
+    --a1:#2563eb;  /* blue */
+    --a2:#7c3aed;  /* purple */
+    --a3:#06b6d4;  /* cyan */
+    --a4:#f43f5e;  /* rose */
+    --a5:#f59e0b;  /* amber */
+
+    --good:#16a34a;
+    --bad:#e11d48;
+    --warn:#f59e0b;
 
     --radius: 22px;
     --radius2: 16px;
-    --ring: 0 0 0 4px rgba(94,234,212,.18);
+    --radius3: 12px;
 
+    --ring: 0 0 0 4px rgba(37,99,235,.16);
     --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   }
 
-  [data-theme="light"]{
-    --bg0:#f4f7ff;
-    --bg1:#ffffff;
-    --panel:rgba(15,23,42,.06);
-    --panel2:rgba(15,23,42,.045);
-    --border:rgba(15,23,42,.10);
-    --shadow: 0 18px 55px rgba(2,6,23,.12);
+  /* Dark theme */
+  [data-theme="dark"]{
+    --bg0:#0b1226;
+    --bg1:#070a12;
 
-    --text:#0b1226;
-    --muted:rgba(11,18,38,.70);
-    --muted2:rgba(11,18,38,.52);
-    --ring: 0 0 0 4px rgba(96,165,250,.18);
+    --text:#f3f6ff;
+    --muted: rgba(243,246,255,.68);
+    --muted2: rgba(243,246,255,.50);
+
+    --panel: rgba(255,255,255,.07);
+    --panel2: rgba(255,255,255,.04);
+    --border: rgba(255,255,255,.12);
+
+    --shadow: 0 22px 70px rgba(0,0,0,.42);
+    --shadow2: 0 12px 40px rgba(0,0,0,.38);
+
+    --ring: 0 0 0 4px rgba(96,165,250,.16);
+
+    /* Accents slightly softened in dark */
+    --a1:#60a5fa;
+    --a2:#a78bfa;
+    --a3:#22d3ee;
+    --a4:#fb7185;
+    --a5:#fbbf24;
+
+    --good:#22c55e;
+    --bad:#fb7185;
+    --warn:#fbbf24;
   }
 
-  /* Accent themes */
-  [data-accent="mint"]{ --a1:#5eead4; --a2:#a78bfa; --a3:#60a5fa; --a4:#fb7185; --a5:#fbbf24; }
-  [data-accent="sunset"]{ --a1:#fb7185; --a2:#fbbf24; --a3:#60a5fa; --a4:#a78bfa; --a5:#34d399; }
-  [data-accent="ocean"]{ --a1:#60a5fa; --a2:#5eead4; --a3:#a78bfa; --a4:#fbbf24; --a5:#fb7185; }
+  /* Optional accent palettes (tap “Colors”) */
+  [data-accent="sky"]   { --a1:#2563eb; --a2:#7c3aed; --a3:#06b6d4; --a4:#f43f5e; --a5:#f59e0b; }
+  [data-accent="mint"]  { --a1:#0ea5e9; --a2:#10b981; --a3:#6366f1; --a4:#f97316; --a5:#f59e0b; }
+  [data-accent="sunset"]{ --a1:#f97316; --a2:#db2777; --a3:#6366f1; --a4:#ef4444; --a5:#f59e0b; }
 
   *{ box-sizing:border-box; }
+  *{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   html,body{ height:100%; }
   body{
     margin:0;
     font-family: var(--font);
     color: var(--text);
     background:
-      radial-gradient(900px 650px at 14% 6%, color-mix(in srgb, var(--a1) 18%, transparent), transparent 60%),
-      radial-gradient(900px 650px at 86% 0%, color-mix(in srgb, var(--a2) 18%, transparent), transparent 58%),
-      radial-gradient(900px 650px at 55% 110%, color-mix(in srgb, var(--a3) 12%, transparent), transparent 60%),
+      radial-gradient(900px 650px at 15% 0%, rgba(37,99,235,.08), transparent 60%),
+      radial-gradient(900px 650px at 85% 0%, rgba(124,58,237,.07), transparent 58%),
+      radial-gradient(900px 650px at 55% 110%, rgba(6,182,212,.06), transparent 60%),
       linear-gradient(180deg, var(--bg0), var(--bg1));
     overflow-x:hidden;
   }
+
   a{ color:inherit; text-decoration:none; }
-  .wrap{ max-width: 1320px; margin:0 auto; padding: 18px; }
+  button, input, textarea{ font-family:inherit; }
+
+  .wrap{ max-width: 1320px; margin: 0 auto; padding: 18px; }
+
   .glass{
-    border:1px solid var(--border);
-    background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.28));
     box-shadow: var(--shadow);
     border-radius: var(--radius);
     backdrop-filter: blur(10px);
   }
+  [data-theme="dark"] .glass{
+    background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  }
 
-  /* Top bar */
   .top{ padding: 16px 16px 12px; }
   .topRow{
     display:flex; align-items:flex-start; justify-content:space-between;
-    gap:14px; flex-wrap:wrap;
+    gap: 14px; flex-wrap:wrap;
   }
-  .brand{ display:flex; gap:12px; align-items:flex-start; min-width: 280px; }
+
+  .brand{ display:flex; gap: 12px; align-items:flex-start; min-width: 280px; }
   .logo{
-    width:44px;height:44px;border-radius: 16px;
-    border:1px solid var(--border);
-    background: linear-gradient(135deg,
-      color-mix(in srgb, var(--a1) 35%, transparent),
-      color-mix(in srgb, var(--a2) 35%, transparent)
-    );
+    width: 46px; height: 46px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(135deg,
+        color-mix(in srgb, var(--a1) 20%, transparent),
+        color-mix(in srgb, var(--a2) 20%, transparent)
+      );
     display:grid; place-items:center;
-    font-weight:950;
+    font-weight: 950;
     letter-spacing:.5px;
-    box-shadow: 0 14px 40px rgba(0,0,0,.22);
+    box-shadow: var(--shadow2);
   }
   .brand h1{ margin:0; font-size: 18px; font-weight: 950; letter-spacing:.2px; }
   .brand p{ margin:4px 0 0; color: var(--muted); line-height:1.35; font-size: 13px; }
@@ -113,34 +148,41 @@
     color: var(--muted);
     font-size: 13px;
     white-space:nowrap;
+    backdrop-filter: blur(8px);
   }
   .pill strong{ color: var(--text); }
 
   .btn{
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
     background: var(--panel);
     color: var(--text);
-    padding:10px 12px;
+    padding: 10px 12px;
     border-radius: 14px;
-    font-weight: 950;
+    font-weight: 900;
     cursor:pointer;
-    transition: transform .14s ease, border-color .14s ease, background .14s ease;
     user-select:none;
+    transition: transform .14s ease, border-color .14s ease, background .14s ease, box-shadow .14s ease;
+    backdrop-filter: blur(8px);
   }
-  .btn:hover{ transform: translateY(-1px); border-color: color-mix(in srgb, var(--a1) 40%, var(--border)); }
-  .btn:active{ transform: translateY(0px); }
+  .btn:hover{
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--a1) 35%, var(--border));
+    box-shadow: 0 10px 24px rgba(2,6,23,.08);
+  }
+  [data-theme="dark"] .btn:hover{ box-shadow: 0 10px 24px rgba(0,0,0,.28); }
+  .btn:active{ transform: translateY(0); }
+  .btn.small{ padding: 8px 10px; border-radius: 12px; font-size: 12px; }
+  .btn.ghost{ background: transparent; }
   .btn.primary{
     background: linear-gradient(90deg,
-      color-mix(in srgb, var(--a1) 18%, transparent),
-      color-mix(in srgb, var(--a2) 18%, transparent),
-      color-mix(in srgb, var(--a3) 18%, transparent)
+      color-mix(in srgb, var(--a1) 14%, transparent),
+      color-mix(in srgb, var(--a2) 14%, transparent),
+      color-mix(in srgb, var(--a3) 14%, transparent)
     );
     border-color: color-mix(in srgb, var(--a1) 22%, var(--border));
   }
-  .btn.ghost{ background: transparent; }
-  .btn.small{ padding:8px 10px; border-radius: 12px; font-size: 12px; }
-  .btn.bad:hover{ border-color: rgba(251,113,133,.55); }
-  .btn.good:hover{ border-color: rgba(52,211,153,.55); }
+  .btn.bad:hover{ border-color: color-mix(in srgb, var(--bad) 55%, var(--border)); }
+  .btn.good:hover{ border-color: color-mix(in srgb, var(--good) 55%, var(--border)); }
 
   .bar{
     margin-top: 12px;
@@ -153,15 +195,15 @@
   .bar > div{
     height:100%;
     width:0%;
-    background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
     border-radius: 999px;
+    background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
     transition: width .35s ease;
   }
 
   .grid{
     margin-top: 14px;
     display:grid;
-    grid-template-columns: 380px 1fr;
+    grid-template-columns: 390px 1fr;
     gap: 14px;
   }
   @media (max-width: 980px){
@@ -180,6 +222,7 @@
     text-transform: uppercase;
     color: var(--muted);
   }
+
   .list{
     max-height: calc(100vh - 240px);
     overflow:auto;
@@ -189,7 +232,7 @@
   .wkBtn{
     width:100%;
     border: 1px solid var(--border);
-    background: rgba(255,255,255,.05);
+    background: var(--panel2);
     border-radius: 18px;
     padding: 12px 12px;
     text-align:left;
@@ -197,15 +240,20 @@
     margin-bottom: 10px;
     transition: transform .14s ease, border-color .14s ease, background .14s ease;
     display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    backdrop-filter: blur(10px);
   }
-  .wkBtn:hover{ transform: translateY(-1px); border-color: color-mix(in srgb, var(--a2) 32%, var(--border)); }
+  .wkBtn:hover{
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--a2) 28%, var(--border));
+  }
   .wkBtn.active{
-    border-color: color-mix(in srgb, var(--a1) 50%, var(--border));
-    background: rgba(255,255,255,.075);
+    border-color: color-mix(in srgb, var(--a1) 45%, var(--border));
+    background: color-mix(in srgb, var(--panel) 65%, transparent);
   }
   .wkLeft{ display:flex; flex-direction:column; gap:4px; }
   .wkTitle{ font-weight: 950; }
   .wkSub{ font-size: 12px; color: var(--muted); line-height: 1.25; }
+
   .wkRight{ display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
 
   .badge{
@@ -213,16 +261,19 @@
     padding: 4px 8px;
     border-radius: 999px;
     border: 1px solid var(--border);
-    background: var(--panel2);
+    background: rgba(255,255,255,.45);
     color: var(--muted);
     white-space:nowrap;
+    backdrop-filter: blur(8px);
   }
-  .badge.done{ color: rgba(52,211,153,.95); border-color: rgba(52,211,153,.35); }
-  .badge.ip{ color: rgba(251,191,36,.95); border-color: rgba(251,191,36,.35); }
-  .badge.m0{ color: rgba(148,163,184,.95); }
-  .badge.m1{ color: color-mix(in srgb, var(--a3) 90%, white); border-color: color-mix(in srgb, var(--a3) 35%, var(--border)); }
-  .badge.m2{ color: color-mix(in srgb, var(--a2) 90%, white); border-color: color-mix(in srgb, var(--a2) 35%, var(--border)); }
-  .badge.m3{ color: color-mix(in srgb, var(--a1) 90%, white); border-color: color-mix(in srgb, var(--a1) 35%, var(--border)); }
+  [data-theme="dark"] .badge{ background: rgba(255,255,255,.06); }
+
+  .badge.done{ color: color-mix(in srgb, var(--good) 95%, var(--text)); border-color: color-mix(in srgb, var(--good) 30%, var(--border)); }
+  .badge.ip{ color: color-mix(in srgb, var(--warn) 95%, var(--text)); border-color: color-mix(in srgb, var(--warn) 30%, var(--border)); }
+  .badge.m0{ color: var(--muted); }
+  .badge.m1{ color: color-mix(in srgb, var(--a1) 90%, var(--text)); border-color: color-mix(in srgb, var(--a1) 30%, var(--border)); }
+  .badge.m2{ color: color-mix(in srgb, var(--a2) 90%, var(--text)); border-color: color-mix(in srgb, var(--a2) 30%, var(--border)); }
+  .badge.m3{ color: color-mix(in srgb, var(--a3) 90%, var(--text)); border-color: color-mix(in srgb, var(--a3) 30%, var(--border)); }
 
   .mainHead{
     display:flex; align-items:flex-start; justify-content:space-between;
@@ -235,11 +286,17 @@
   .krow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
 
   .card{
-    border:1px solid var(--border);
-    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.55);
     border-radius: var(--radius);
     padding: 14px;
     margin-bottom: 12px;
+    box-shadow: 0 10px 30px rgba(2,6,23,.06);
+    backdrop-filter: blur(10px);
+  }
+  [data-theme="dark"] .card{
+    background: rgba(255,255,255,.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,.26);
   }
 
   .two{
@@ -252,19 +309,30 @@
   }
 
   .q{
-    border:1px solid var(--border);
-    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.58);
     border-radius: var(--radius);
     padding: 14px;
     position:relative;
     overflow:hidden;
+    box-shadow: 0 10px 30px rgba(2,6,23,.05);
+    backdrop-filter: blur(10px);
   }
+  [data-theme="dark"] .q{
+    background: rgba(255,255,255,.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,.26);
+  }
+
   .q::before{
     content:"";
     position:absolute; inset:-2px;
-    background: radial-gradient(260px 120px at 15% 0%, color-mix(in srgb, var(--a1) 10%, transparent), transparent 60%);
+    background:
+      radial-gradient(280px 140px at 15% 0%,
+        color-mix(in srgb, var(--a1) 10%, transparent),
+        transparent 60%
+      );
     pointer-events:none;
-    opacity:.75;
+    opacity:.8;
   }
   .q > *{ position:relative; }
 
@@ -274,33 +342,43 @@
     justify-content:space-between;
     gap:10px;
   }
-  .qTitle{ font-weight: 950; }
+  .qTitle{ font-weight: 950; line-height:1.25; }
   .qMeta{ margin-top: 4px; color: var(--muted); font-size: 12px; }
 
   .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+
   input[type="text"], input[type="number"]{
-    background: rgba(0,0,0,.14);
+    background: rgba(255,255,255,.65);
     border:1px solid var(--border);
     color: var(--text);
     padding: 10px 12px;
     border-radius: 14px;
     outline:none;
     min-width: 170px;
+    backdrop-filter: blur(8px);
   }
-  input:focus{ box-shadow: var(--ring); border-color: color-mix(in srgb, var(--a1) 45%, var(--border)); }
+  [data-theme="dark"] input[type="text"], [data-theme="dark"] input[type="number"]{
+    background: rgba(0,0,0,.18);
+  }
+  input:focus{
+    box-shadow: var(--ring);
+    border-color: color-mix(in srgb, var(--a1) 40%, var(--border));
+  }
 
   textarea{
     width:100%;
     min-height: 88px;
     resize: vertical;
-    background: rgba(0,0,0,.14);
+    background: rgba(255,255,255,.65);
     border:1px solid var(--border);
     color: var(--text);
     padding: 10px 12px;
     border-radius: 14px;
     outline:none;
     margin-top: 8px;
+    backdrop-filter: blur(8px);
   }
+  [data-theme="dark"] textarea{ background: rgba(0,0,0,.18); }
 
   .optGrid{
     display:grid;
@@ -312,15 +390,26 @@
 
   .opt{
     border:1px solid var(--border);
-    background: rgba(255,255,255,.03);
+    background: rgba(255,255,255,.55);
     padding: 10px 12px;
     border-radius: 14px;
     cursor:pointer;
     font-weight: 900;
-    transition: transform .14s ease, border-color .14s ease;
+    transition: transform .14s ease, border-color .14s ease, background .14s ease;
+    backdrop-filter: blur(10px);
   }
-  .opt:hover{ transform: translateY(-1px); border-color: color-mix(in srgb, var(--a1) 30%, var(--border)); }
-  .opt.sel{ border-color: color-mix(in srgb, var(--a2) 55%, var(--border)); }
+  [data-theme="dark"] .opt{ background: rgba(255,255,255,.05); }
+  .opt:hover{
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--a1) 28%, var(--border));
+  }
+  .opt.sel{
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--a1) 10%, transparent),
+      color-mix(in srgb, var(--a2) 10%, transparent)
+    );
+    border-color: color-mix(in srgb, var(--a2) 35%, var(--border));
+  }
 
   .feedback{
     display:none;
@@ -328,63 +417,81 @@
     padding: 10px 12px;
     border-radius: 14px;
     border:1px solid var(--border);
-    background: rgba(255,255,255,.03);
+    background: rgba(255,255,255,.55);
     color: var(--muted);
     line-height: 1.35;
+    backdrop-filter: blur(10px);
   }
+  [data-theme="dark"] .feedback{ background: rgba(255,255,255,.05); }
+
   .feedback.good{
     display:block;
-    border-color: rgba(52,211,153,.35);
-    background: rgba(52,211,153,.06);
-    color: rgba(52,211,153,.95);
+    border-color: color-mix(in srgb, var(--good) 30%, var(--border));
+    background: color-mix(in srgb, var(--good) 10%, rgba(255,255,255,.55));
+    color: color-mix(in srgb, var(--good) 85%, var(--text));
   }
+  [data-theme="dark"] .feedback.good{
+    background: color-mix(in srgb, var(--good) 10%, rgba(255,255,255,.05));
+  }
+
   .feedback.bad{
     display:block;
-    border-color: rgba(251,113,133,.35);
-    background: rgba(251,113,133,.06);
-    color: rgba(251,113,133,.95);
+    border-color: color-mix(in srgb, var(--bad) 30%, var(--border));
+    background: color-mix(in srgb, var(--bad) 10%, rgba(255,255,255,.55));
+    color: color-mix(in srgb, var(--bad) 85%, var(--text));
   }
+  [data-theme="dark"] .feedback.bad{
+    background: color-mix(in srgb, var(--bad) 10%, rgba(255,255,255,.05));
+  }
+
   .feedback.warn{
     display:block;
-    border-color: rgba(251,191,36,.35);
-    background: rgba(251,191,36,.06);
-    color: rgba(251,191,36,.95);
+    border-color: color-mix(in srgb, var(--warn) 30%, var(--border));
+    background: color-mix(in srgb, var(--warn) 10%, rgba(255,255,255,.55));
+    color: color-mix(in srgb, var(--warn) 80%, var(--text));
   }
+  [data-theme="dark"] .feedback.warn{
+    background: color-mix(in srgb, var(--warn) 10%, rgba(255,255,255,.05));
+  }
+
   .hint{
     display:none;
     margin-top: 8px;
     color: var(--muted);
     font-size: 13px;
   }
+
   .tiny{ font-size: 12px; color: var(--muted); }
-  .hr{ height:1px; background: rgba(255,255,255,.10); margin: 12px 0; }
+  .hr{ height:1px; background: color-mix(in srgb, var(--border) 80%, transparent); margin: 12px 0; }
 
   /* Visual widgets */
   .viz{
     margin-top:10px;
     border:1px solid var(--border);
-    background: rgba(255,255,255,.03);
+    background: rgba(255,255,255,.50);
     border-radius: 16px;
     padding:10px;
+    backdrop-filter: blur(10px);
   }
-  .svg{
-    width:100%;
-    height:auto;
-    display:block;
-  }
+  [data-theme="dark"] .viz{ background: rgba(255,255,255,.05); }
+
+  .svg{ width:100%; height:auto; display:block; }
+
   .chip{
-    display:inline-flex; align-items:center; gap:6px;
+    display:inline-flex; align-items:center; gap:8px;
     padding:6px 10px;
     border-radius:999px;
     border:1px solid var(--border);
-    background: rgba(255,255,255,.04);
+    background: var(--panel2);
     font-size:12px;
     color: var(--muted);
+    backdrop-filter: blur(8px);
   }
+
   .dot{
     width:10px;height:10px;border-radius:999px;
-    background: var(--a3);
-    box-shadow: 0 0 0 3px rgba(96,165,250,.12);
+    background: var(--a1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--a1) 12%, transparent);
   }
 
   /* Confetti */
@@ -401,10 +508,18 @@
     border-radius: 4px;
     opacity:.95;
     transform: translateY(-20px) rotate(0deg);
-    animation: fall 900ms ease-in forwards;
+    animation: fall 950ms ease-in forwards;
   }
   @keyframes fall{
-    to{ transform: translateY(110vh) rotate(540deg); opacity:0.9; }
+    to{ transform: translateY(110vh) rotate(560deg); opacity:0.9; }
+  }
+
+  /* Small footer note */
+  .footerNote{
+    margin-top: 10px;
+    color: var(--muted2);
+    font-size: 12px;
+    line-height: 1.35;
   }
 </style>
 </head>
@@ -417,22 +532,24 @@
         <div class="logo">K</div>
         <div>
           <h1>Kaylyn Math — Studio</h1>
-          <p>Grade 3+ • 20-week track • daily practice • mini-quizzes • visuals • robust answer checking</p>
+          <p>Grade 3+ • 20-week track • mastery • daily practice • mini-quizzes • visuals • robust answer checking</p>
         </div>
       </div>
+
       <div class="pillRow">
         <div class="pill">Weeks done: <strong id="doneLabel">0/20</strong></div>
         <div class="pill">XP: <strong id="xpLabel">0</strong></div>
         <div class="pill">Streak: <strong id="streakLabel">0</strong></div>
 
-        <button class="btn small" id="themeBtn">Theme</button>
-        <button class="btn small" id="accentBtn">Colors</button>
+        <button class="btn small" id="themeBtn" title="Toggle light/dark">Theme</button>
+        <button class="btn small" id="accentBtn" title="Change accent palette">Colors</button>
 
         <button class="btn small" id="exportBtn">Export</button>
         <button class="btn small" id="importBtn">Import</button>
         <button class="btn small bad" id="resetBtn">Reset</button>
       </div>
     </div>
+
     <div class="bar"><div id="progressBar"></div></div>
   </section>
 
@@ -447,7 +564,13 @@
           <button class="btn small ghost" id="dashboardBtn">Parent</button>
         </div>
       </div>
+
       <div class="list" id="weekList"></div>
+
+      <div class="footerNote">
+        Tips: Use <b>Daily</b> for 10 minutes/day. Use <b>Mini-Quiz</b> weekly.
+        Answers accept <b>x</b>, <b>×</b>, <b>*</b>, <b>÷</b>, <b>/</b>. Spaces/commas ignored.
+      </div>
     </aside>
 
     <main class="glass panel">
@@ -455,23 +578,24 @@
         <div>
           <div class="path" id="pathLabel">Course</div>
           <div class="hTitle" id="titleLabel">Welcome</div>
-          <div class="desc" id="descLabel">Pick a week or use Daily / Mini-Quiz. Everything saves on this device.</div>
+          <div class="desc" id="descLabel">Pick a week, or use Daily / Mini-Quiz. Everything saves on this device.</div>
           <div class="krow">
             <div class="pill">Skill: <strong id="skillLabel">—</strong></div>
             <div class="pill">Mastery: <strong id="masteryLabel">—</strong></div>
             <div class="pill">Seed: <strong id="seedLabel">—</strong></div>
           </div>
         </div>
+
         <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
           <div class="badge" id="weekStatus">—</div>
-          <button class="btn small primary" id="newSetBtn" title="New variations">New set</button>
+          <button class="btn small primary" id="newSetBtn" title="New variations for this week / set">New set</button>
         </div>
       </div>
 
       <div class="card" id="messageCard">
         <div class="krow" style="justify-content:space-between">
-          <div class="chip"><span class="dot"></span> Forgiving input: x, ×, *, ÷, / • ignores spaces/commas</div>
-          <div class="chip"><span class="dot" style="background:var(--a1)"></span> After 1 wrong: hint • After 2 wrong: steps</div>
+          <div class="chip"><span class="dot"></span> After 1 wrong: hint • After 2 wrong: steps</div>
+          <div class="chip"><span class="dot" style="background:var(--a2)"></span> Mastery grows with correct streaks</div>
         </div>
       </div>
 
@@ -479,7 +603,7 @@
 
       <div class="card" id="explainCard" style="display:none">
         <div class="hTitle">✍️ Explain your thinking (2–5 sentences)</div>
-        <div class="desc">This is how top students learn: explain clearly, then improve.</div>
+        <div class="desc">Strong students explain clearly. It builds real understanding.</div>
         <textarea id="explainBox" placeholder="I started by… Then I noticed… I checked by…"></textarea>
         <div class="krow" style="justify-content:space-between">
           <button class="btn primary" id="saveExplainBtn">Save</button>
@@ -489,7 +613,7 @@
 
       <div class="card" id="quizCard" style="display:none">
         <div class="hTitle">⏱️ Mini-Quiz</div>
-        <div class="desc">10 questions • mixed skills • score + time. Hit Start to generate.</div>
+        <div class="desc">10 questions • mixed skills • timed • score. Press Start to generate.</div>
         <div class="krow" style="justify-content:space-between">
           <div class="pill">Time: <strong id="quizTime">0:00</strong></div>
           <div class="pill">Score: <strong id="quizScore">0/10</strong></div>
@@ -499,7 +623,7 @@
 
       <div class="card" id="dashboard" style="display:none">
         <div class="hTitle">📊 Parent dashboard</div>
-        <div class="desc">Accuracy, time, and weakest skills.</div>
+        <div class="desc">Attempts, accuracy, and weakest skills (what to practice next).</div>
         <div class="hr"></div>
         <div class="krow" id="dashStats"></div>
         <div class="hr"></div>
@@ -513,35 +637,33 @@
 
 <script>
 /* ============================================================
-   Kaylyn Math — Studio v2
-   - 10 problems/week + infinite variations
-   - Daily practice + Mini-Quiz
-   - Visual widgets (array, number line, fraction bar)
-   - Robust checking + better feedback
-============================================================ */
+   Kaylyn Math — Studio (Perfect Edition)
+   ============================================================ */
 
-/* ---------- Persistence ---------- */
-const STORE_KEY = "kaylyn_math_studio_v2";
+/* ---------------- Persistence ---------------- */
+const STORE_KEY = "kaylyn_math_studio_perfect_v1";
 const now = () => Date.now();
 
-const defaultState = () => ({
-  theme: "dark",
-  accent: "mint",
-  mode: "course", // course | daily | quiz
-  currentWeek: 0,
+function defaultState(){
+  return {
+    theme: "light",
+    accent: "sky",
+    mode: "course",         // course | daily | quiz
+    currentWeek: 0,
 
-  weeks: {},      // weekIndex -> { setCounter, attempts, explain, timeMs, stats }
-  mastery: {},    // skillId -> { xp, level, lastSeen }
-  totalXp: 0,
-  streak: 0,
-  streakBest: 0,
-  doneWeeks: {},
+    weeks: {},              // weekIndex -> { setCounter, attempts, explain }
+    mastery: {},            // skillId -> { xp, level, lastSeen }
+    totalXp: 0,
+    streak: 0,
+    streakBest: 0,
 
-  events: [],     // answer logs
-  quiz: { active:false, startedAt:0, seed:"", score:0, total:10, qids:[] }
-});
+    events: [],             // {t,type,detail}
+    quiz: { active:false, startedAt:0, seed:"", score:0, total:10 }
+  };
+}
 
 let state = loadState();
+
 function loadState(){
   try{
     const raw = localStorage.getItem(STORE_KEY);
@@ -551,42 +673,50 @@ function loadState(){
     const merged = { ...d, ...s };
     merged.weeks = s.weeks || {};
     merged.mastery = s.mastery || {};
-    merged.doneWeeks = s.doneWeeks || {};
     merged.events = s.events || [];
-    merged.quiz = { ...d.quiz, ...(s.quiz||{}) };
+    merged.quiz = { ...d.quiz, ...(s.quiz || {}) };
     return merged;
   }catch{
     return defaultState();
   }
 }
-function saveState(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+function saveState(){
+  localStorage.setItem(STORE_KEY, JSON.stringify(state));
+}
+
 function logEvent(type, detail){
   state.events.push({ t: now(), type, detail });
-  if(state.events.length > 600) state.events = state.events.slice(-450);
+  if(state.events.length > 800) state.events = state.events.slice(-600);
   saveState();
 }
 
-/* ---------- Theme + Accent ---------- */
+/* ---------------- Theme / Accent ---------------- */
 const themeBtn = document.getElementById("themeBtn");
 const accentBtn = document.getElementById("accentBtn");
 
 function applyTheme(){
-  document.documentElement.setAttribute("data-theme", state.theme === "light" ? "light" : "dark");
-  document.documentElement.setAttribute("data-accent", state.accent || "mint");
+  document.documentElement.setAttribute("data-theme", state.theme === "dark" ? "dark" : "light");
+  document.documentElement.setAttribute("data-accent", state.accent || "sky");
 }
+
 themeBtn.addEventListener("click", ()=>{
-  state.theme = (state.theme === "light") ? "dark" : "light";
-  saveState(); applyTheme();
+  state.theme = (state.theme === "dark") ? "light" : "dark";
+  saveState();
+  applyTheme();
 });
+
 accentBtn.addEventListener("click", ()=>{
-  const order = ["mint","sunset","ocean"];
-  const i = order.indexOf(state.accent||"mint");
+  const order = ["sky","mint","sunset"];
+  const i = order.indexOf(state.accent || "sky");
   state.accent = order[(i+1)%order.length];
-  saveState(); applyTheme();
+  saveState();
+  applyTheme();
 });
+
 applyTheme();
 
-/* ---------- Seeded RNG ---------- */
+/* ---------------- Seeded RNG ---------------- */
 function xmur3(str){
   let h = 1779033703 ^ str.length;
   for(let i=0;i<str.length;i++){
@@ -599,6 +729,7 @@ function xmur3(str){
     return (h ^= (h >>> 16)) >>> 0;
   };
 }
+
 function mulberry32(a){
   return function(){
     let t = a += 0x6D2B79F5;
@@ -607,12 +738,15 @@ function mulberry32(a){
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
 function seededRand(seedStr){
   const seed = xmur3(seedStr)();
   return mulberry32(seed);
 }
+
 function rInt(r,a,b){ return Math.floor(r()*(b-a+1))+a; }
 function pick(r,arr){ return arr[Math.floor(r()*arr.length)]; }
+
 function shuffle(r, arr){
   const a = arr.slice();
   for(let i=a.length-1;i>0;i--){
@@ -622,20 +756,26 @@ function shuffle(r, arr){
   return a;
 }
 
-/* ---------- Parsing + Checkers ---------- */
+/* ---------------- Robust Expression Checking ---------------- */
 function normalizeExpr(s){
   return String(s ?? "")
     .trim()
-    .replace(/[,\s]+/g, "")     // ignore commas/spaces
+    .replace(/[,\s]+/g, "")  // ignore commas/spaces
     .replace(/[xX×]/g, "*")
     .replace(/÷/g, "/")
     .replace(/[–—]/g, "-");
 }
-function isSafeExpr(s){ return /^[0-9+\-*/().]+$/.test(s); }
+
+function isSafeExpr(s){
+  return /^[0-9+\-*/().]+$/.test(s);
+}
+
 function countNumbersInExpr(s){
+  // counts numeric literals; (8*3)*1 -> [8,3,1] => 3
   const m = s.match(/\d+(\.\d+)?/g);
   return m ? m.length : 0;
 }
+
 function evalExprSafe(expr){
   const s = normalizeExpr(expr);
   if(!s) throw new Error("empty");
@@ -647,6 +787,7 @@ function evalExprSafe(expr){
   if(!Number.isFinite(v)) throw new Error("notfinite");
   return v;
 }
+
 function approxEq(a,b,eps=1e-9){ return Math.abs(a-b) < eps; }
 
 function parseFraction(s){
@@ -683,11 +824,11 @@ const Checkers = {
       if(!t) return { ok:false, msg:"Enter an answer." };
       if(!/^-?\d+$/.test(t)) return { ok:false, msg:"Enter a whole number." };
       const n = Number(t);
-      return n===expected ? { ok:true } : { ok:false, msg:`Not quite. Try again.` };
+      return n===expected ? { ok:true } : { ok:false, msg:"Not quite. Try again." };
     };
   },
-  number(expected, eps=1e-9){
-    return (raw)=>{
+  number(expected, eps=1e-6){
+    return (raw) => {
       const t = String(raw ?? "").trim();
       if(!t) return { ok:false, msg:"Enter an answer." };
       const n = Number(t);
@@ -698,7 +839,7 @@ const Checkers = {
   fractionEquals(expected){
     return (raw)=>{
       const v = parseFraction(raw);
-      if(v===null) return { ok:false, msg:"Type a fraction like 3/4 (or decimal)." };
+      if(v===null) return { ok:false, msg:"Type a fraction like 3/4 (or a decimal)." };
       return approxEq(v, expected, 1e-9) ? { ok:true } : { ok:false, msg:"Not quite. Check numerator/denominator." };
     };
   },
@@ -707,10 +848,12 @@ const Checkers = {
       const s = normalizeExpr(raw);
       if(!s) return { ok:false, msg:"Type an expression like (5+7)*2." };
       if(!isSafeExpr(s)) return { ok:false, msg:"Use only numbers and + - × ÷ ( )" };
+
       if(exactlyNums!=null){
         const c = countNumbersInExpr(s);
         if(c !== exactlyNums) return { ok:false, msg:`Use exactly ${exactlyNums} numbers (you used ${c}).` };
       }
+
       try{
         const val = evalExprSafe(s);
         if(approxEq(val, target, 1e-9)) return { ok:true };
@@ -722,25 +865,26 @@ const Checkers = {
   }
 };
 
-/* ---------- Confetti ---------- */
+/* ---------------- Confetti ---------------- */
 const confettiEl = document.getElementById("confetti");
+
 function popConfetti(){
   confettiEl.innerHTML = "";
   confettiEl.classList.add("on");
   const colors = ["var(--a1)","var(--a2)","var(--a3)","var(--a4)","var(--a5)"];
-  for(let i=0;i<28;i++){
+  for(let i=0;i<30;i++){
     const d = document.createElement("div");
     d.className = "c";
-    d.style.left = Math.random()*100 + "vw";
+    d.style.left = (Math.random()*100) + "vw";
     d.style.top = "-20px";
     d.style.background = colors[Math.floor(Math.random()*colors.length)];
-    d.style.animationDuration = (650 + Math.random()*700) + "ms";
+    d.style.animationDuration = (650 + Math.random()*800) + "ms";
     confettiEl.appendChild(d);
   }
-  setTimeout(()=>confettiEl.classList.remove("on"), 980);
+  setTimeout(()=>confettiEl.classList.remove("on"), 1050);
 }
 
-/* ---------- Visual Widgets ---------- */
+/* ---------------- Visual Models ---------------- */
 function svgArrayModel(rows, cols){
   const cell = 18, gap = 4;
   const w = cols*(cell+gap)+gap, h = rows*(cell+gap)+gap;
@@ -749,12 +893,11 @@ function svgArrayModel(rows, cols){
     for(let c=0;c<cols;c++){
       const x = gap + c*(cell+gap);
       const y = gap + r*(cell+gap);
-      rects += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="4" fill="rgba(96,165,250,.18)" stroke="rgba(255,255,255,.12)" />`;
+      rects += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="4"
+        fill="rgba(37,99,235,.16)" stroke="rgba(15,23,42,.14)" />`;
     }
   }
-  return `<svg class="svg" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
-    ${rects}
-  </svg>`;
+  return `<svg class="svg" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
 }
 
 function svgNumberLine(min, max, mark){
@@ -765,16 +908,18 @@ function svgNumberLine(min, max, mark){
   for(let v=min; v<=max; v++){
     const tx = x(v);
     const big = (v%5===0);
-    ticks += `<line x1="${tx}" y1="${lineY-(big?10:6)}" x2="${tx}" y2="${lineY+(big?10:6)}" stroke="rgba(255,255,255,.20)" />`;
+    ticks += `<line x1="${tx}" y1="${lineY-(big?10:6)}" x2="${tx}" y2="${lineY+(big?10:6)}"
+      stroke="rgba(15,23,42,.18)" />`;
     if(big){
-      ticks += `<text x="${tx}" y="${lineY+26}" text-anchor="middle" font-size="12" fill="rgba(238,242,255,.70)">${v}</text>`;
+      ticks += `<text x="${tx}" y="${lineY+26}" text-anchor="middle" font-size="12"
+        fill="rgba(11,18,38,.70)">${v}</text>`;
     }
   }
   const mx = x(mark);
   return `<svg class="svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-    <line x1="${pad}" y1="${lineY}" x2="${W-pad}" y2="${lineY}" stroke="rgba(255,255,255,.25)" stroke-width="2"/>
+    <line x1="${pad}" y1="${lineY}" x2="${W-pad}" y2="${lineY}" stroke="rgba(15,23,42,.22)" stroke-width="2"/>
     ${ticks}
-    <circle cx="${mx}" cy="${lineY}" r="8" fill="rgba(94,234,212,.85)" />
+    <circle cx="${mx}" cy="${lineY}" r="8" fill="rgba(37,99,235,.85)" />
   </svg>`;
 }
 
@@ -785,62 +930,68 @@ function svgFractionBar(num, den){
   let segs="";
   for(let i=0;i<den;i++){
     const x = barX + i*segW;
-    const fill = i < num ? "rgba(167,139,250,.35)" : "rgba(255,255,255,.06)";
-    segs += `<rect x="${x}" y="${barY}" width="${segW-2}" height="${barH}" rx="6" fill="${fill}" stroke="rgba(255,255,255,.12)" />`;
+    const fill = i < num ? "rgba(124,58,237,.22)" : "rgba(15,23,42,.06)";
+    segs += `<rect x="${x}" y="${barY}" width="${segW-2}" height="${barH}" rx="6"
+      fill="${fill}" stroke="rgba(15,23,42,.12)" />`;
   }
   return `<svg class="svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     ${segs}
-    <text x="${W/2}" y="${barY+barH+20}" text-anchor="middle" font-size="12" fill="rgba(238,242,255,.70)">${num}/${den}</text>
+    <text x="${W/2}" y="${barY+barH+20}" text-anchor="middle" font-size="12" fill="rgba(11,18,38,.70)">${num}/${den}</text>
   </svg>`;
 }
 
-/* ---------- Course Map ---------- */
+/* ---------------- Course Map (20 weeks) ---------------- */
 const Weeks = [
   { title:"Week 1 — Flexible Numbers", desc:"Expressions, factors, mental math.", skill:"flex" },
   { title:"Week 2 — Patterns & Rules", desc:"Find rules, extend, create.", skill:"patterns" },
-  { title:"Week 3 — Add/Sub Structure", desc:"Regrouping, compensation.", skill:"addsub" },
+  { title:"Week 3 — Addition & Subtraction", desc:"Regrouping, compensation, checks.", skill:"addsub" },
   { title:"Week 4 — Multiplication", desc:"Multi-digit strategies + arrays.", skill:"mult" },
   { title:"Week 5 — Division", desc:"Quotient & remainder meaning.", skill:"div" },
   { title:"Week 6 — Word Problems", desc:"Translate words to math.", skill:"word" },
   { title:"Week 7 — Estimation", desc:"Bounds + sanity checks.", skill:"estimate" },
   { title:"Week 8 — Time", desc:"Elapsed time + schedules.", skill:"time" },
   { title:"Week 9 — Money", desc:"Totals + change.", skill:"money" },
-  { title:"Week10 — Fractions Intro", desc:"Fractions as numbers.", skill:"frac_intro" },
-  { title:"Week11 — Equivalent Fractions", desc:"Scale & simplify + bars.", skill:"frac_equiv" },
-  { title:"Week12 — Compare Fractions", desc:"Compare smartly.", skill:"frac_comp" },
-  { title:"Week13 — Area & Perimeter", desc:"Rectangles & reasoning.", skill:"area" },
-  { title:"Week14 — Geometry", desc:"Angles, symmetry.", skill:"geo" },
-  { title:"Week15 — Data", desc:"Read charts/tables.", skill:"data" },
-  { title:"Week16 — Early Algebra", desc:"Unknowns & balance.", skill:"alg" },
-  { title:"Week17 — Mixed Review", desc:"Interleaving for mastery.", skill:"review" },
-  { title:"Week18 — Challenges", desc:"Harder puzzles.", skill:"challenge" },
-  { title:"Week19 — Teach Back", desc:"Explain like a teacher.", skill:"teach" },
-  { title:"Week20 — Capstone", desc:"Create + solve problems.", skill:"capstone" },
+  { title:"Week 10 — Fractions Intro", desc:"Fractions as numbers + bars.", skill:"frac_intro" },
+  { title:"Week 11 — Equivalent Fractions", desc:"Scale & simplify.", skill:"frac_equiv" },
+  { title:"Week 12 — Compare Fractions", desc:"Smart comparisons.", skill:"frac_comp" },
+  { title:"Week 13 — Area & Perimeter", desc:"Rectangles & reasoning.", skill:"area" },
+  { title:"Week 14 — Geometry", desc:"Angles, symmetry.", skill:"geo" },
+  { title:"Week 15 — Data", desc:"Read charts/tables.", skill:"data" },
+  { title:"Week 16 — Early Algebra", desc:"Unknowns & balance.", skill:"alg" },
+  { title:"Week 17 — Mixed Review", desc:"Interleaving for mastery.", skill:"review" },
+  { title:"Week 18 — Challenges", desc:"Harder puzzles.", skill:"challenge" },
+  { title:"Week 19 — Teach Back", desc:"Explain like a teacher.", skill:"teach" },
+  { title:"Week 20 — Capstone", desc:"Create + solve problems.", skill:"capstone" },
 ];
 
-/* ---------- Mastery ---------- */
+/* ---------------- Mastery ---------------- */
 function getMastery(skillId){
-  if(!state.mastery[skillId]) state.mastery[skillId] = { xp:0, level:0, lastSeen:0 };
+  if(!state.mastery[skillId]){
+    state.mastery[skillId] = { xp:0, level:0, lastSeen:0 };
+  }
   return state.mastery[skillId];
 }
+
 function masteryLevelFromXp(xp){
-  if(xp >= 300) return 3;
-  if(xp >= 160) return 2;
+  if(xp >= 320) return 3;
+  if(xp >= 170) return 2;
   if(xp >= 70)  return 1;
   return 0;
 }
+
 function masteryBadge(level){
   if(level>=3) return { text:"Mastery 3", cls:"m3" };
   if(level===2) return { text:"Mastery 2", cls:"m2" };
   if(level===1) return { text:"Mastery 1", cls:"m1" };
   return { text:"Mastery 0", cls:"m0" };
 }
+
 function award(skillId, correct){
   const m = getMastery(skillId);
   if(correct){
     state.streak = (state.streak||0) + 1;
     state.streakBest = Math.max(state.streakBest||0, state.streak);
-    const gain = 8 + Math.min(12, state.streak); // 9..20
+    const gain = 8 + Math.min(12, state.streak); // streak-based XP
     m.xp += gain;
     state.totalXp += gain;
     m.level = masteryLevelFromXp(m.xp);
@@ -851,16 +1002,16 @@ function award(skillId, correct){
   saveState();
 }
 
-/* ---------- Week state ---------- */
+/* ---------------- Week State ---------------- */
 function weekState(i){
   if(!state.weeks[i]){
-    state.weeks[i] = { setCounter:0, attempts:{}, explain:"", timeMs:0, stats:{correct:0, wrong:0} };
+    state.weeks[i] = { setCounter:0, attempts:{}, explain:"" };
   }
   const ws = state.weeks[i];
   ws.attempts ||= {};
-  ws.stats ||= {correct:0, wrong:0};
   return ws;
 }
+
 function dayKey(){
   const d = new Date();
   const y = d.getFullYear();
@@ -868,60 +1019,60 @@ function dayKey(){
   const dd = String(d.getDate()).padStart(2,'0');
   return `${y}-${m}-${dd}`;
 }
+
 function weekSeed(i){
   const ws = weekState(i);
   return `w${i}-${dayKey()}-set${ws.setCounter||0}`;
 }
-function dailySeed(){
-  return `daily-${dayKey()}-set0`;
-}
-function quizSeed(){
-  return `quiz-${dayKey()}-${Math.floor((state.quiz.startedAt||now())/1000)}`;
-}
+function dailySeed(){ return `daily-${dayKey()}-set0`; }
+function quizSeed(){ return `quiz-${dayKey()}-${Math.floor((state.quiz.startedAt||now())/1000)}`; }
 
-/* ---------- Generators (10 questions/week) ---------- */
+/* ---------------- Question Model ---------------- */
 function q(id, type, skillId, prompt, hint, solution, checker, vizHtml=null, options=null, correctIndex=null){
-  return { id, type, skillId, prompt, hint, solution, checker, vizHtml, options, correctIndex };
+  return { id, uid:id, type, skillId, prompt, hint, solution, checker, vizHtml, options, correctIndex };
 }
 
+/* ---------------- Generators (Grade 3+) ---------------- */
+/* Week 1 */
 function genFlex(r){
   const target = pick(r, [18,24,28,30,36,42]);
   const nums = 3;
   const n = target;
-  // factor pairs question
-  let pairCount=0;
-  for(let a=1;a<=Math.floor(Math.sqrt(n));a++) if(n%a===0) pairCount++;
+  let pairs=0;
+  for(let a=1;a<=Math.floor(Math.sqrt(n));a++) if(n%a===0) pairs++;
 
   return [
-    q("exprTarget","expr","flex",
+    q("flex_expr","expr","flex",
       `Make <b>${target}</b> using exactly <b>${nums}</b> numbers.`,
-      `Try (a+b)×c or a×b±c. Example: (5+7)×2.`,
-      `Example answers: 8×3×1, (5+7)×2, (10-2)×3 (varies by target).`,
+      `Try (a+b)×c or a×b±c. Example: (5+7)*2.`,
+      `Any valid expression that equals ${target} using exactly ${nums} numbers is correct.`,
       Checkers.exprEquals(target, nums)
     ),
-    q("pairCount","integer","flex",
+    q("flex_pairs","integer","flex",
       `How many factor pairs does <b>${target}</b> have?`,
-      `Count divisors up to √n; each divisor gives one pair.`,
-      `Count a=1..√${target} where ${target}%a=0 → ${pairCount} pairs.`,
-      Checkers.integer(pairCount)
+      `Count divisors up to √n. Each divisor gives one pair.`,
+      `${target} has ${pairs} factor pairs.`,
+      Checkers.integer(pairs)
     )
   ];
 }
 
+/* Week 2 */
 function genPatterns(r){
   const a = rInt(r, 2, 9);
   const mul = pick(r, [2,3]);
   const add = rInt(r, 1, 6);
   const seq = [a];
   for(let i=0;i<4;i++) seq.push(seq[seq.length-1]*mul + add);
+
   return [
-    q("next","integer","patterns",
+    q("pat_next","integer","patterns",
       `Pattern: <b>${seq[0]} → ${seq[1]} → ${seq[2]} → ${seq[3]} → ?</b>`,
-      `Try ×${mul} then +${add}.`,
-      `Rule: ×${mul} then +${add}. Next is ${seq[4]}.`,
+      `Try “×${mul} then +${add}”.`,
+      `Next is ${seq[4]}.`,
       Checkers.integer(seq[4])
     ),
-    q("rule","text","patterns",
+    q("pat_rule","text","patterns",
       `Write the rule in one sentence.`,
       `Example: “Multiply by __ then add __.”`,
       `A strong answer: “Multiply by ${mul} then add ${add}.”`,
@@ -930,92 +1081,93 @@ function genPatterns(r){
   ];
 }
 
+/* Week 3 */
 function genAddSub(r){
   const a = rInt(r, 1200, 9800);
   const b = rInt(r, 120, 3900);
   const op = pick(r, ["+","-"]);
   const ans = op==="+" ? a+b : a-b;
+
   const prompt = op==="+" ? `Compute: <b>${a} + ${b}</b>` : `Compute: <b>${a} − ${b}</b>`;
-  const min = Math.min(a,b), max = Math.max(a,b);
-  const mark = max - min; // little number line “difference” visualization for subtraction
-  const viz = op==="-" ? `<div class="viz">${svgNumberLine(0, 50, Math.min(50, mark%51))}</div>` : null;
+  const hint = op==="+" ? "Add place values with regrouping." : "Subtract with regrouping (borrowing).";
+  const viz = op==="-" ? `<div>${svgNumberLine(0, 50, Math.min(50, Math.abs(a-b)%51))}</div>` : null;
 
   return [
-    q("calc","integer","addsub", prompt,
-      op==="+" ? "Add place values with regrouping." : "Subtract with borrowing (regrouping).",
-      `Answer: ${ans}.`,
-      Checkers.integer(ans),
-      viz
-    ),
-    q("check","mcq","addsub",
-      `Fastest check for your answer?`,
+    q("as_calc","integer","addsub", prompt, hint, `Answer: ${ans}.`, Checkers.integer(ans), viz ? `<div class="viz">${viz}</div>` : null),
+    q("as_check","mcq","addsub",
+      `Best quick check?`,
       `Inverse operation catches mistakes.`,
-      `Use inverse: subtraction checks addition, addition checks subtraction.`,
+      `Use the inverse operation.`,
       null,
       null,
-      ["Use inverse operation","Guess","Do nothing","Only calculator"],
+      ["Use inverse operation","Guess","Only calculator","Skip checking"],
       0
     )
   ];
 }
 
+/* Week 4 */
 function genMult(r){
   const rows = rInt(r, 3, 9);
   const cols = rInt(r, 4, 12);
   const ans = rows*cols;
+
   const a = rInt(r, 1200, 9999);
   const b = rInt(r, 12, 99);
   const ans2 = a*b;
 
   return [
-    q("array","integer","mult",
-      `Array model: <b>${rows}</b> rows and <b>${cols}</b> columns. How many total?`,
+    q("m_array","integer","mult",
+      `Array: <b>${rows}</b> rows and <b>${cols}</b> columns. Total?`,
       `Multiply rows × columns.`,
       `${rows}×${cols}=${ans}.`,
       Checkers.integer(ans),
       `<div class="viz">${svgArrayModel(rows, cols)}</div>`
     ),
-    q("mul","integer","mult",
+    q("m_mul","integer","mult",
       `Multiply: <b>${a} × ${b}</b>`,
-      `Break ${b} into tens and ones: (tens + ones).`,
-      `Use distributive property. Answer: ${ans2}.`,
+      `Break into tens and ones, then add partial products.`,
+      `Answer: ${ans2}.`,
       Checkers.integer(ans2)
     )
   ];
 }
 
+/* Week 5 */
 function genDiv(r){
-  const divisor = pick(r, [3,4,5,6,7,8,9,12]);
+  const divisor = pick(r, [3,4,5,6,7,8,9,10,12]);
   const q0 = rInt(r, 20, 140);
   const n = divisor*q0 + pick(r,[0,1,2,3,4,5]);
   const quotient = Math.floor(n/divisor);
   const rem = n - quotient*divisor;
+
   return [
-    q("quo","integer","div",
+    q("d_quo","integer","div",
       `Divide: <b>${n} ÷ ${divisor}</b> — quotient only.`,
-      `How many groups of ${divisor} fit?`,
-      `${divisor}×${quotient}=${quotient*divisor}, remainder ${rem}.`,
+      `How many groups of ${divisor}?`,
+      `Quotient is ${quotient}.`,
       Checkers.integer(quotient)
     ),
-    q("rem","integer","div",
+    q("d_rem","integer","div",
       `Same problem: remainder only.`,
-      `Remainder is what's left after groups.`,
-      `Remainder: ${rem}.`,
+      `Remainder is what's left.`,
+      `Remainder is ${rem}.`,
       Checkers.integer(rem)
     )
   ];
 }
 
+/* Week 6 */
 function genWord(r){
   const type = pick(r, ["mult","add","div"]);
   if(type==="mult"){
-    const rows = rInt(r, 3, 10);
-    const per = rInt(r, 6, 18);
-    const ans = rows*per;
-    return [ q("wp","integer","word",
-      `Kaylyn has <b>${rows}</b> boxes with <b>${per}</b> stickers each. Total stickers?`,
+    const boxes = rInt(r, 3, 10);
+    const each = rInt(r, 6, 18);
+    const ans = boxes*each;
+    return [ q("wp_mult","integer","word",
+      `Kaylyn has <b>${boxes}</b> boxes with <b>${each}</b> stickers each. Total stickers?`,
       `Total = groups × each group.`,
-      `${rows}×${per}=${ans}.`,
+      `Answer: ${ans}.`,
       Checkers.integer(ans)
     ) ];
   }
@@ -1023,10 +1175,10 @@ function genWord(r){
     const a = rInt(r, 120, 980);
     const b = rInt(r, 120, 980);
     const ans = a+b;
-    return [ q("wp","integer","word",
+    return [ q("wp_add","integer","word",
       `A library had <b>${a}</b> books and got <b>${b}</b> more. How many now?`,
       `More means add.`,
-      `${a}+${b}=${ans}.`,
+      `Answer: ${ans}.`,
       Checkers.integer(ans)
     ) ];
   }
@@ -1034,10 +1186,10 @@ function genWord(r){
   const groups = pick(r, [3,4,5,6,8,9,10,11,12]);
   const qt = Math.floor(total/groups);
   const rem = total - qt*groups;
-  return [ q("wp","text","word",
+  return [ q("wp_div","text","word",
     `<b>${total}</b> cookies shared among <b>${groups}</b> kids. Write “q r”. Example: 7 r 2`,
-    `Quotient is how many each; remainder is leftovers.`,
-    `${total}÷${groups}=${qt} remainder ${rem} → "${qt} r ${rem}".`,
+    `Quotient = each kid gets. Remainder = leftovers.`,
+    `Correct format: "${qt} r ${rem}".`,
     (raw)=>{
       const t = String(raw??"").trim().toLowerCase().replace(/\s+/g," ");
       const ok = t === `${qt} r ${rem}` || t === `${qt}r${rem}` || t === `${qt} remainder ${rem}` || t === `${qt} rem ${rem}`;
@@ -1046,6 +1198,7 @@ function genWord(r){
   ) ];
 }
 
+/* Week 7 */
 function genEstimate(r){
   const a = rInt(r, 40, 990);
   const b = rInt(r, 40, 990);
@@ -1053,14 +1206,15 @@ function genEstimate(r){
   const b10 = Math.round(b/10)*10;
   const est = a10 + b10;
   const exact = a + b;
+
   return [
-    q("est","integer","estimate",
+    q("est_round","integer","estimate",
       `Estimate: round <b>${a}</b> and <b>${b}</b> to nearest 10, then add.`,
-      `${a}≈${a10}, ${b}≈${b10}.`,
-      `${a10}+${b10}=${est}.`,
+      `Round, then add.`,
+      `Estimate: ${est}.`,
       Checkers.integer(est)
     ),
-    q("exact","integer","estimate",
+    q("est_exact","integer","estimate",
       `Now compute exact: <b>${a}+${b}</b>.`,
       `Exact addition.`,
       `Exact: ${exact}.`,
@@ -1069,6 +1223,7 @@ function genEstimate(r){
   ];
 }
 
+/* Week 8 */
 function genTime(r){
   const h1 = rInt(r,1,11);
   const m1 = pick(r,[0,10,15,20,30,40,45,50]);
@@ -1078,64 +1233,74 @@ function genTime(r){
   const h2 = Math.floor((end/60)%12) || 12;
   const m2 = end%60;
   const fmt = (h,m)=>`${h}:${String(m).padStart(2,'0')}`;
-  return [ q("elapsed","text","time",
+
+  return [ q("time_elapsed","text","time",
     `Starting at <b>${fmt(h1,m1)}</b>, add <b>${addMin}</b> minutes. What time? (h:mm)`,
-    `Add minutes, carry to next hour.`,
-    `${fmt(h2,m2)}.`,
-    (raw)=> String(raw??"").trim() === fmt(h2,m2) ? {ok:true} : {ok:false,msg:"Check h:mm format and carry minutes."}
+    `Carry minutes into hours.`,
+    `Answer: ${fmt(h2,m2)}.`,
+    (raw)=> String(raw??"").trim() === fmt(h2,m2) ? {ok:true} : {ok:false,msg:"Check carry and format h:mm (like 3:05)."}
   ) ];
 }
 
+/* Week 9 */
 function genMoney(r){
   const cost = pick(r,[1.25, 2.40, 3.75, 4.10, 5.60, 6.95, 7.30, 8.45]);
   const paid = pick(r,[10,20]);
   const change = Number((paid - cost).toFixed(2));
-  return [ q("change","number","money",
+
+  return [ q("money_change","number","money",
     `Something costs <b>$${cost.toFixed(2)}</b>. You pay <b>$${paid.toFixed(2)}</b>. Change?`,
     `Change = paid − cost.`,
-    `$${paid.toFixed(2)} − $${cost.toFixed(2)} = $${change.toFixed(2)}.`,
+    `Change: $${change.toFixed(2)}.`,
     Checkers.number(change, 0.00001)
   ) ];
 }
 
+/* Week 10 */
 function genFracIntro(r){
   const den = pick(r,[2,3,4,5,6,8,10,12]);
   const num = rInt(r,1,den-1);
   const val = num/den;
-  return [ q("decimal","number","frac_intro",
-    `What is <b>${num}/${den}</b> as a decimal?`,
+
+  return [ q("fi_decimal","number","frac_intro",
+    `What is <b>${num}/${den}</b> as a decimal? (2 decimals ok)`,
     `Divide numerator by denominator.`,
     `${num}/${den} = ${val}.`,
     (raw)=>{
-      const t=String(raw??"").trim(); if(!t) return {ok:false,msg:"Enter a decimal."};
-      const n=Number(t); if(!Number.isFinite(n)) return {ok:false,msg:"Enter a number."};
-      return Math.abs(n-val)<=0.02 ? {ok:true} : {ok:false,msg:"Try dividing num by den."};
+      const t=String(raw??"").trim();
+      if(!t) return {ok:false,msg:"Enter a decimal."};
+      const n=Number(t);
+      if(!Number.isFinite(n)) return {ok:false,msg:"Enter a number."};
+      return Math.abs(n-val)<=0.02 ? {ok:true} : {ok:false,msg:"Try dividing numerator by denominator."};
     },
     `<div class="viz">${svgFractionBar(num,den)}</div>`
   ) ];
 }
 
+/* Week 11 */
 function genFracEquiv(r){
   const base = pick(r, [[1,2],[1,3],[2,3],[3,4],[2,5],[3,5],[4,6],[3,8]]);
   const k = pick(r,[2,3,4,5]);
   const n = base[0]*k, d = base[1]*k;
+
   return [
-    q("simpN","integer","frac_equiv",
+    q("fe_simpN","integer","frac_equiv",
       `Simplify <b>${n}/${d}</b>. Enter the numerator.`,
-      `Divide top and bottom by the same number.`,
-      `Divide by ${k} → ${base[0]}/${base[1]}.`,
+      `Divide top & bottom by the same number.`,
+      `Numerator: ${base[0]}.`,
       Checkers.integer(base[0]),
       `<div class="viz">${svgFractionBar(n,d)}</div>`
     ),
-    q("simpD","integer","frac_equiv",
+    q("fe_simpD","integer","frac_equiv",
       `Simplify <b>${n}/${d}</b>. Enter the denominator.`,
       `Same division as numerator.`,
-      `Divide by ${k}.`,
+      `Denominator: ${base[1]}.`,
       Checkers.integer(base[1])
     )
   ];
 }
 
+/* Week 12 */
 function genFracComp(r){
   const fr = pick(r, [
     [[3,4],[5,8]],
@@ -1148,10 +1313,11 @@ function genFracComp(r){
   const A = fr[0], B = fr[1];
   const vA = A[0]/A[1], vB = B[0]/B[1];
   const correct = vA > vB ? "A" : "B";
-  return [ q("bigger","mcq","frac_comp",
+
+  return [ q("fc_bigger","mcq","frac_comp",
     `Which is bigger? <b>A=${A[0]}/${A[1]}</b> or <b>B=${B[0]}/${B[1]}</b>`,
-    `Compare to 1 or cross-multiply.`,
-    `A≈${vA.toFixed(3)}, B≈${vB.toFixed(3)} → ${correct} is bigger.`,
+    `Compare to 1, or cross-multiply.`,
+    `A≈${vA.toFixed(3)}, B≈${vB.toFixed(3)} → ${correct}.`,
     null,
     null,
     ["A","B"],
@@ -1159,31 +1325,35 @@ function genFracComp(r){
   ) ];
 }
 
+/* Week 13 */
 function genArea(r){
   const w = rInt(r, 3, 14);
   const h = rInt(r, 3, 14);
   const area = w*h;
   const per = 2*(w+h);
+
   return [
-    q("area","integer","area",
+    q("area_area","integer","area",
       `Rectangle <b>${w}×${h}</b>: Area = ?`,
-      `Area = length×width.`,
-      `${w}×${h}=${area}.`,
+      `Area = length × width.`,
+      `Area: ${area}.`,
       Checkers.integer(area)
     ),
-    q("per","integer","area",
+    q("area_per","integer","area",
       `Rectangle <b>${w}×${h}</b>: Perimeter = ?`,
       `Perimeter = 2(w+h).`,
-      `2(${w}+${h})=${per}.`,
+      `Perimeter: ${per}.`,
       Checkers.integer(per)
     )
   ];
 }
 
+/* Week 14 */
 function genGeo(r){
   const angle = pick(r, [30,45,60,75,90,120,135,150]);
   const type = angle<90 ? "acute" : angle===90 ? "right" : "obtuse";
-  return [ q("angle","mcq","geo",
+
+  return [ q("geo_angle","mcq","geo",
     `An angle of <b>${angle}°</b> is…`,
     `Acute < 90, Right = 90, Obtuse > 90.`,
     `${angle}° is ${type}.`,
@@ -1194,13 +1364,15 @@ function genGeo(r){
   ) ];
 }
 
+/* Week 15 */
 function genData(r){
   const vals = [rInt(r,2,9), rInt(r,2,9), rInt(r,2,9), rInt(r,2,9)];
   const labels = ["Apples","Oranges","Bananas","Grapes"];
   const max = Math.max(...vals);
   const idx = vals.indexOf(max);
-  return [ q("chart","mcq","data",
-    `Chart counts: ${labels.map((l,i)=>`<b>${l}</b> ${vals[i]}`).join(" • ")}. Greatest?`,
+
+  return [ q("data_max","mcq","data",
+    `Counts: ${labels.map((l,i)=>`<b>${l}</b> ${vals[i]}`).join(" • ")}. Greatest?`,
     `Greatest means largest number.`,
     `${labels[idx]} has ${max}.`,
     null,
@@ -1210,18 +1382,21 @@ function genData(r){
   ) ];
 }
 
+/* Week 16 */
 function genAlg(r){
   const x = rInt(r, 8, 80);
   const add = rInt(r, 4, 30);
-  const eq = x+add;
-  return [ q("box","integer","alg",
+  const eq = x + add;
+
+  return [ q("alg_box","integer","alg",
     `Solve: <b>□ + ${add} = ${eq}</b>. Enter □.`,
     `Undo + by subtracting.`,
-    `${eq}−${add}=${x}.`,
+    `□ = ${eq} − ${add} = ${x}.`,
     Checkers.integer(x)
   ) ];
 }
 
+/* Review & Challenge pool */
 function genReview(r){
   const pool = [genAddSub, genMult, genDiv, genFracEquiv, genArea, genAlg];
   return pick(r, pool)(r);
@@ -1231,18 +1406,19 @@ function genChallenge(r){
   const rows = pick(r,[2,3,4]);
   const cols = pick(r,[3,4,5]);
   const rects = (rows*(rows+1)/2) * (cols*(cols+1)/2);
-  return [ q("rects","integer","challenge",
+
+  return [ q("ch_rects","integer","challenge",
     `How many rectangles in a <b>${rows}×${cols}</b> grid of squares?`,
     `Formula: (r(r+1)/2)×(c(c+1)/2).`,
-    `(${rows}×${rows+1}/2)×(${cols}×${cols+1}/2) = ${rects}.`,
+    `Answer: ${rects}.`,
     Checkers.integer(rects)
   ) ];
 }
 
 function genTeach(r){
-  return [ q("teach","text","teach",
-    `Teach-back: Explain a strategy you used today in 2–5 sentences.`,
-    `Start with: “First I… Then I…”`,
+  return [ q("teach_explain","text","teach",
+    `Teach-back: Explain a strategy you used today (2–5 sentences).`,
+    `Start with “First I… Then I…”`,
     `Clear explanation is the goal.`,
     (raw)=> String(raw??"").trim().length>=25 ? ({ok:true}) : ({ok:false,msg:"Write at least 2 sentences."})
   ) ];
@@ -1250,13 +1426,13 @@ function genTeach(r){
 
 function genCapstone(r){
   return [
-    q("create","text","capstone",
+    q("cap_create","text","capstone",
       `Capstone: Write your own word problem (1–2 sentences).`,
       `Include numbers and a clear question.`,
       `Original problem required.`,
       (raw)=> String(raw??"").trim().length>=25 ? ({ok:true}) : ({ok:false,msg:"Write 1–2 full sentences."})
     ),
-    q("solve","text","capstone",
+    q("cap_solve","text","capstone",
       `Capstone: Solve your problem with steps (2–6 sentences).`,
       `Show operation + why.`,
       `Explain steps.`,
@@ -1272,40 +1448,55 @@ const WeekGenerators = [
   genAlg, genReview, genChallenge, genTeach, genCapstone
 ];
 
-/* ---------- Build questions for week (10 per week) ---------- */
+/* ---------------- Build 10 questions per week ---------------- */
 function questionsForWeek(i, seedStr){
   const seed = seedStr || weekSeed(i);
   const r = seededRand(seed);
   const gen = WeekGenerators[i] || genFlex;
-  let qs = [];
 
-  // main generator yields 1–2
+  let qs = [];
   qs = qs.concat(gen(r));
 
-  // top up with review/challenge to reach 10
   while(qs.length < 10){
     const extra = (i < 10) ? genReview(r) : (r() < 0.65 ? genReview(r) : genChallenge(r));
     qs = qs.concat(extra);
   }
 
-  // ensure unique IDs by appending an index
-  qs = qs.slice(0,10).map((qq, idx)=>({ ...qq, uid: qq.id + "_" + idx }));
+  qs = qs.slice(0,10).map((qq, idx)=>({ ...qq, uid: `${qq.id}_${idx}` }));
   return qs;
 }
 
+/* ---------------- Week completion ---------------- */
 function weekCompletion(i){
   const ws = weekState(i);
   const qs = questionsForWeek(i, weekSeed(i));
   let correct=0, attempted=0;
-  for(const q of qs){
-    const a = ws.attempts[q.uid];
+
+  for(const qq of qs){
+    const a = ws.attempts[qq.uid];
     if(a && a.tries>0) attempted++;
     if(a && a.status==="correct") correct++;
   }
-  return { correct, attempted, total: qs.length, done: correct===qs.length && qs.length>0 };
+  return { correct, attempted, total: qs.length, done: (correct===qs.length && qs.length>0) };
 }
 
-/* ---------- UI refs ---------- */
+/* ---------------- Weakest week finder (for Daily/Quiz) ---------------- */
+function weakestWeekIndex(){
+  let bestIdx = 0;
+  let best = null;
+  for(let i=0;i<Weeks.length;i++){
+    const sk = Weeks[i].skill;
+    const m = getMastery(sk);
+    const cand = { i, lvl:m.level||0, xp:m.xp||0 };
+    if(!best || cand.lvl < best.lvl || (cand.lvl===best.lvl && cand.xp < best.xp)){
+      best = cand;
+      bestIdx = i;
+    }
+  }
+  return bestIdx;
+}
+
+/* ---------------- UI references ---------------- */
 const weekListEl = document.getElementById("weekList");
 const doneLabel = document.getElementById("doneLabel");
 const xpLabel = document.getElementById("xpLabel");
@@ -1345,9 +1536,9 @@ const dailyBtn = document.getElementById("dailyBtn");
 const quizBtn = document.getElementById("quizBtn");
 const dashboardBtn = document.getElementById("dashboardBtn");
 
-/* ---------- Top stats ---------- */
+/* ---------------- Top Stats ---------------- */
 function updateTop(){
-  let done = 0;
+  let done=0;
   for(let i=0;i<Weeks.length;i++){
     if(weekCompletion(i).done) done++;
   }
@@ -1357,7 +1548,7 @@ function updateTop(){
   progressBar.style.width = `${Math.round((done/Weeks.length)*100)}%`;
 }
 
-/* ---------- Parent dashboard ---------- */
+/* ---------------- Parent Dashboard ---------------- */
 function renderDashboard(){
   const correct = state.events.filter(e=>e.type==="answer" && e.detail?.ok===true).length;
   const wrong = state.events.filter(e=>e.type==="answer" && e.detail?.ok===false).length;
@@ -1386,22 +1577,7 @@ function renderDashboard(){
   dashWeak.textContent = "Weakest skills: " + (weak || "No data yet.");
 }
 
-/* ---------- Adaptive selection ---------- */
-function weakestWeekIndex(){
-  let bestIdx = 0;
-  let best = null;
-  for(let i=0;i<Weeks.length;i++){
-    const sk = Weeks[i].skill;
-    const m = getMastery(sk);
-    const cand = { i, lvl:m.level||0, xp:m.xp||0 };
-    if(!best || cand.lvl < best.lvl || (cand.lvl===best.lvl && cand.xp < best.xp)){
-      best = cand; bestIdx = i;
-    }
-  }
-  return bestIdx;
-}
-
-/* ---------- Mini-Quiz ---------- */
+/* ---------------- Mini-Quiz ---------------- */
 let quizTimer = null;
 function fmtTime(ms){
   const s = Math.max(0, Math.floor(ms/1000));
@@ -1409,6 +1585,7 @@ function fmtTime(ms){
   const ss = String(s%60).padStart(2,'0');
   return `${m}:${ss}`;
 }
+
 function startQuiz(){
   state.mode = "quiz";
   state.quiz.active = true;
@@ -1418,6 +1595,7 @@ function startQuiz(){
   state.quiz.seed = quizSeed();
   saveState();
   render();
+
   if(quizTimer) clearInterval(quizTimer);
   quizTimer = setInterval(()=>{
     if(state.mode!=="quiz" || !state.quiz.active) return;
@@ -1425,12 +1603,11 @@ function startQuiz(){
   }, 250);
 }
 
-/* ---------- Rendering ---------- */
+/* ---------------- Rendering ---------------- */
 function render(){
-  // left list: weeks + daily/quiz entry
   weekListEl.innerHTML = "";
 
-  // Mode header “cards”
+  // Mode cards at top of list
   const modeCard = (title, sub, active, onClick) => {
     const b = document.createElement("button");
     b.className = "wkBtn" + (active ? " active" : "");
@@ -1447,17 +1624,17 @@ function render(){
     weekListEl.appendChild(b);
   };
 
-  modeCard("Daily Practice", "Fresh mixed set every day (weak-skill focused).", state.mode==="daily", ()=>{
+  modeCard("Daily Practice", "Fresh mixed set each day (focuses weak skills).", state.mode==="daily", ()=>{
     state.mode="daily"; saveState(); render();
   });
-  modeCard("Mini-Quiz", "10 questions • timed • score.", state.mode==="quiz", ()=>{
+  modeCard("Mini-Quiz", "10 questions • timed • scored.", state.mode==="quiz", ()=>{
     state.mode="quiz"; saveState(); render();
   });
   modeCard("Course Weeks", "20-week track with mastery.", state.mode==="course", ()=>{
     state.mode="course"; saveState(); render();
   });
 
-  // Week cards (only “course” shows as primary list but still visible)
+  // Week cards
   for(let i=0;i<Weeks.length;i++){
     const wk = Weeks[i];
     const comp = weekCompletion(i);
@@ -1488,12 +1665,13 @@ function render(){
     weekListEl.appendChild(btn);
   }
 
-  // Main panel header
-  let mode = state.mode || "course";
+  // Main header
+  const mode = state.mode || "course";
+  const wkIndex = state.currentWeek;
+
   quizCard.style.display = (mode==="quiz") ? "block" : "none";
   dashboard.style.display = "none";
 
-  let wkIndex = state.currentWeek;
   let seed = "";
   let title = "";
   let desc = "";
@@ -1508,10 +1686,11 @@ function render(){
     skill = wk.skill;
     qs = questionsForWeek(wkIndex, seed);
   } else if(mode==="daily"){
-    // daily: mix weak skills by picking 10 questions from weakest weeks
     seed = dailySeed();
     title = "Daily Practice";
-    desc = "Mixed set generated from weakest skills (changes daily).";
+    desc = "10-question set generated from weak skills (changes daily).";
+    skill = "mixed";
+
     const r = seededRand(seed);
     const picks = [];
     for(let k=0;k<10;k++){
@@ -1519,13 +1698,13 @@ function render(){
       const local = questionsForWeek(wi, `${seed}-w${wi}-k${k}`);
       picks.push(pick(r, local));
     }
-    qs = picks.map((qq, idx)=>({ ...qq, uid: `daily_${idx}_${qq.uid}`, skillId: qq.skillId || Weeks[weakestWeekIndex()].skill }));
-    skill = "mixed";
+    qs = picks.map((qq, idx)=>({ ...qq, uid: `daily_${idx}_${qq.uid}` }));
   } else { // quiz
     seed = state.quiz.seed || quizSeed();
     title = "Mini-Quiz";
-    desc = "10 questions, timed. Press Start to generate.";
+    desc = state.quiz.active ? "Answer all 10. Use hint/steps if needed." : "Press Start to generate your quiz.";
     skill = "mixed";
+
     if(state.quiz.active){
       const r = seededRand(seed);
       const picks = [];
@@ -1543,11 +1722,10 @@ function render(){
   pathLabel.textContent = mode==="course" ? "Course" : mode==="daily" ? "Daily Practice" : "Mini-Quiz";
   titleLabel.textContent = title;
   descLabel.textContent = desc;
-
   skillLabel.textContent = skill;
+
   seedLabel.textContent = seed.replaceAll("-", " · ");
 
-  // mastery label
   if(mode==="course"){
     const m = getMastery(Weeks[wkIndex].skill);
     const mb = masteryBadge(m.level||0);
@@ -1556,14 +1734,14 @@ function render(){
     masteryLabel.textContent = "—";
   }
 
-  // explain card only for course weeks
+  // Explain card (course only)
   explainCard.style.display = (mode==="course") ? "block" : "none";
   if(mode==="course"){
     const ws = weekState(wkIndex);
     explainBox.value = ws.explain || "";
-    explainSaved.textContent = (ws.explain && ws.explain.trim()) ? "Saved ✓" : "Not saved";
-    explainSaved.style.color = (ws.explain && ws.explain.trim()) ? "rgba(52,211,153,.95)" : "var(--muted)";
-    // week status
+    const saved = (ws.explain && ws.explain.trim());
+    explainSaved.textContent = saved ? "Saved ✓" : "Not saved";
+    explainSaved.style.color = saved ? "var(--good)" : "var(--muted)";
     const comp = weekCompletion(wkIndex);
     weekStatus.className = "badge " + (comp.done ? "done" : comp.attempted ? "ip" : "");
     weekStatus.textContent = comp.done ? "✓ Week complete" : comp.attempted ? `${comp.correct}/${comp.total} correct` : "Not started";
@@ -1572,13 +1750,13 @@ function render(){
     weekStatus.textContent = mode==="daily" ? "Daily set" : (state.quiz.active ? "Quiz running" : "Quiz not started");
   }
 
-  // quiz header
+  // Quiz header
   if(mode==="quiz"){
     quizTime.textContent = state.quiz.active ? fmtTime(now() - state.quiz.startedAt) : "0:00";
     quizScore.textContent = `${state.quiz.score||0}/${state.quiz.total||10}`;
   }
 
-  // render questions
+  // Render questions
   qWrap.innerHTML = "";
   qs.forEach((qq, idx)=>{
     const card = document.createElement("div");
@@ -1590,20 +1768,13 @@ function render(){
     top.innerHTML = `
       <div>
         <div class="qTitle">${qq.prompt}</div>
-        <div class="qMeta">Skill <b>${metaSkill}</b> • Q${idx+1}/${qs.length}</div>
+        <div class="qMeta">Skill <b>${metaSkill}</b> • Q${idx+1}/${qs.length || 10}</div>
       </div>
       <div class="badge">—</div>
     `;
 
     const body = document.createElement("div");
     body.style.marginTop = "10px";
-
-    const feedback = document.createElement("div");
-    feedback.className = "feedback";
-
-    const hint = document.createElement("div");
-    hint.className = "hint";
-    hint.textContent = qq.hint || "";
 
     // visuals
     if(qq.vizHtml){
@@ -1613,16 +1784,21 @@ function render(){
       body.appendChild(viz);
     }
 
-    let getValue = () => "";
-    let attemptKey = qq.uid;
+    const feedback = document.createElement("div");
+    feedback.className = "feedback";
 
-    // MCQ
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = qq.hint || "";
+
+    let getValue = () => "";
+
     if(qq.type === "mcq"){
       const optGrid = document.createElement("div");
       optGrid.className = "optGrid";
       let selected = null;
 
-      qq.options.forEach((label, i)=>{
+      (qq.options || []).forEach((label, i)=>{
         const b = document.createElement("button");
         b.type="button";
         b.className = "opt";
@@ -1633,12 +1809,13 @@ function render(){
         });
         optGrid.appendChild(b);
       });
+
       body.appendChild(optGrid);
       getValue = ()=> selected==null ? "" : String(selected);
     } else {
       const input = document.createElement("input");
       input.type = (qq.type==="number") ? "number" : "text";
-      input.placeholder = (qq.type==="expr") ? "Try: (5+7)*2  or  8x3x1" : "Type answer…";
+      input.placeholder = (qq.type==="expr") ? "Try: (8*3)*1  or  8x3x1  or  (5+7)*2" : "Type answer…";
       body.appendChild(input);
       getValue = ()=> input.value;
     }
@@ -1662,6 +1839,7 @@ function render(){
     hintBtn.addEventListener("click", ()=>{
       hint.style.display = (hint.style.display==="block") ? "none" : "block";
     });
+
     stepsBtn.addEventListener("click", ()=>{
       feedback.className = "feedback warn";
       feedback.textContent = qq.solution || "No solution available.";
@@ -1674,8 +1852,11 @@ function render(){
       feedback.style.display = "block";
     }
 
-    // attempts are tracked per-mode lightly (course saves per-week; daily/quiz not persisted as “week progress”)
-    let tries = 0;
+    // course attempts save per week
+    const courseWS = (mode==="course") ? weekState(wkIndex) : null;
+    const a0 = (mode==="course") ? (courseWS.attempts[qq.uid] || { tries:0, status:"" }) : { tries:0, status:"" };
+    let tries = a0.tries || 0;
+
     function markCorrect(){
       top.querySelector(".badge").className = "badge done";
       top.querySelector(".badge").textContent = "✓ Correct";
@@ -1691,14 +1872,13 @@ function render(){
 
       let res = { ok:false, msg:"Try again." };
 
-      // MCQ
       if(qq.type==="mcq"){
-        const idx = Number(raw);
-        if(Number.isNaN(idx)) res = { ok:false, msg:"Choose an option." };
-        else res = (idx === qq.correctIndex) ? { ok:true } : { ok:false, msg:"Not quite. Try again." };
+        const idxSel = Number(raw);
+        if(Number.isNaN(idxSel)) res = { ok:false, msg:"Choose an option." };
+        else res = (idxSel === qq.correctIndex) ? { ok:true } : { ok:false, msg:"Not quite. Try again." };
       } else if(qq.type==="text"){
         if(qq.checker) res = qq.checker(raw);
-        else res = String(raw??"").trim().length>=15 ? { ok:true } : { ok:false, msg:"Write a little more." };
+        else res = (String(raw??"").trim().length >= 15) ? { ok:true } : { ok:false, msg:"Write a little more." };
       } else {
         res = qq.checker ? qq.checker(raw) : { ok:false, msg:"No checker." };
       }
@@ -1709,25 +1889,28 @@ function render(){
         markCorrect();
         setFeedback("good", "Correct ✅");
         award(metaSkill, true);
+        if(tries===1) popConfetti();
 
-        // quiz scoring
         if(mode==="quiz" && state.quiz.active){
           state.quiz.score = (state.quiz.score||0) + 1;
-          quizScore.textContent = `${state.quiz.score}/${state.quiz.total||10}`;
-          // end quiz when all answered (simple: score counts correct only; user can still attempt others)
+          saveState();
+          quizScore.textContent = `${state.quiz.score||0}/${state.quiz.total||10}`;
         }
 
-        if(tries===1) popConfetti();
+        if(mode==="course"){
+          courseWS.attempts[qq.uid] = { tries, status:"correct" };
+          saveState();
+        }
       } else {
         markProgress();
         award(metaSkill, false);
 
-        // smarter feedback for expr target
+        // extra-smart feedback for expression problems
         if(qq.type==="expr"){
           const norm = normalizeExpr(raw);
           const used = norm ? countNumbersInExpr(norm) : 0;
           if(used===0){
-            setFeedback("bad", "Type an expression like (5+7)*2 or 8x3x1.");
+            setFeedback("bad", "Type an expression like (5+7)*2 or (8*3)*1.");
           } else {
             setFeedback("bad", res.msg || "Try again.");
           }
@@ -1737,10 +1920,24 @@ function render(){
 
         if(tries>=1) hint.style.display="block";
         if(tries>=2) stepsBtn.style.display="inline-block";
+
+        if(mode==="course"){
+          courseWS.attempts[qq.uid] = { tries, status:"wrong" };
+          saveState();
+        }
       }
 
-      saveState();
       updateTop();
+      if(mode==="course"){
+        const comp = weekCompletion(wkIndex);
+        weekStatus.className = "badge " + (comp.done ? "done" : comp.attempted ? "ip" : "");
+        weekStatus.textContent = comp.done ? "✓ Week complete" : comp.attempted ? `${comp.correct}/${comp.total} correct` : "Not started";
+      }
+    }
+
+    // pre-mark if already correct in course
+    if(mode==="course" && a0.status==="correct"){
+      markCorrect();
     }
 
     checkBtn.addEventListener("click", check);
@@ -1754,21 +1951,21 @@ function render(){
     card.appendChild(row);
     card.appendChild(feedback);
     card.appendChild(hint);
+
     qWrap.appendChild(card);
   });
 
   updateTop();
 }
 
-/* ---------- Buttons & actions ---------- */
+/* ---------------- Buttons ---------------- */
 newSetBtn.addEventListener("click", ()=>{
   if(state.mode==="course"){
     const ws = weekState(state.currentWeek);
     ws.setCounter = (ws.setCounter||0) + 1;
-    ws.attempts = {};
+    ws.attempts = {}; // fresh set
     saveState();
-  }
-  if(state.mode==="quiz"){
+  } else if(state.mode==="quiz"){
     startQuiz();
     return;
   }
@@ -1778,6 +1975,7 @@ newSetBtn.addEventListener("click", ()=>{
 courseBtn.addEventListener("click", ()=>{ state.mode="course"; saveState(); render(); });
 dailyBtn.addEventListener("click", ()=>{ state.mode="daily"; saveState(); render(); });
 quizBtn.addEventListener("click", ()=>{ state.mode="quiz"; saveState(); render(); });
+
 dashboardBtn.addEventListener("click", ()=>{
   dashboard.style.display = (dashboard.style.display==="none") ? "block" : "none";
   if(dashboard.style.display==="block") renderDashboard();
@@ -1791,7 +1989,7 @@ saveExplainBtn.addEventListener("click", ()=>{
   ws.explain = explainBox.value;
   saveState();
   explainSaved.textContent = "Saved ✓";
-  explainSaved.style.color = "rgba(52,211,153,.95)";
+  explainSaved.style.color = "var(--good)";
 });
 
 exportBtn.addEventListener("click", ()=>{
@@ -1837,7 +2035,7 @@ resetBtn.addEventListener("click", ()=>{
   render();
 });
 
-/* ---------- Boot ---------- */
+/* ---------------- Boot ---------------- */
 render();
 </script>
 </body>
