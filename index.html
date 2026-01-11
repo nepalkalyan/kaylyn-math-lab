@@ -1,108 +1,1686 @@
-<!-- version: force-rebuild-1 -->
+<!-- force rebuild: 2026-01-10-1 -->
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kaylyn Math Lab</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kaylyn Math — Studio</title>
 <style>
-body{
-  margin:0;
-  font-family:system-ui,Arial;
-  background:#0b1020;
-  color:#eef2ff;
-}
-.wrap{max-width:1100px;margin:auto;padding:20px}
-.grid{display:grid;grid-template-columns:260px 1fr;gap:20px}
-@media(max-width:800px){.grid{grid-template-columns:1fr}}
-button{cursor:pointer}
-.week{
-  width:100%;margin-bottom:8px;padding:10px;
-  background:#111833;color:#eef2ff;
-  border:1px solid #2a3366;border-radius:10px;
-}
-.week.active{border-color:#5eead4}
-.card{
-  background:#111833;border:1px solid #2a3366;
-  border-radius:14px;padding:14px;margin-bottom:12px;
-}
-input{padding:8px;border-radius:8px;border:1px solid #2a3366;background:#000;color:#fff}
-.good{color:#34d399}
-.bad{color:#fb7185}
+  /* =========================
+     Apple-ish Design System
+  ========================== */
+  :root{
+    --bg0:#05060b;
+    --bg1:#070a12;
+    --panel:rgba(255,255,255,.06);
+    --panel2:rgba(255,255,255,.04);
+    --border:rgba(255,255,255,.10);
+    --shadow: 0 24px 70px rgba(0,0,0,.45);
+    --text:#eef2ff;
+    --muted:rgba(238,242,255,.68);
+    --muted2:rgba(238,242,255,.48);
+    --accent:#5eead4;
+    --accent2:#a78bfa;
+    --accent3:#60a5fa;
+    --good:#34d399;
+    --bad:#fb7185;
+    --warn:#fbbf24;
+    --radius: 22px;
+    --radius2: 16px;
+    --ring: 0 0 0 4px rgba(94,234,212,.18);
+    --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+  [data-theme="light"]{
+    --bg0:#f5f7ff;
+    --bg1:#ffffff;
+    --panel:rgba(15,23,42,.05);
+    --panel2:rgba(15,23,42,.04);
+    --border:rgba(15,23,42,.10);
+    --shadow: 0 18px 55px rgba(2,6,23,.12);
+    --text:#0b1226;
+    --muted:rgba(11,18,38,.68);
+    --muted2:rgba(11,18,38,.50);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family: var(--font);
+    color: var(--text);
+    background:
+      radial-gradient(900px 650px at 16% 6%, rgba(94,234,212,.16), transparent 60%),
+      radial-gradient(900px 650px at 86% 0%, rgba(167,139,250,.16), transparent 58%),
+      radial-gradient(900px 650px at 50% 110%, rgba(96,165,250,.10), transparent 60%),
+      linear-gradient(180deg, var(--bg0), var(--bg1));
+    overflow-x:hidden;
+  }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width: 1280px; margin:0 auto; padding: 18px; }
+  .glass{
+    border:1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+    backdrop-filter: blur(10px);
+  }
+  .top{
+    padding: 16px 16px 12px;
+  }
+  .topRow{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex; gap:12px; align-items:flex-start;
+    min-width: 260px;
+  }
+  .logo{
+    width:44px;height:44px;
+    border-radius: 16px;
+    border:1px solid var(--border);
+    background: linear-gradient(135deg, rgba(94,234,212,.34), rgba(167,139,250,.34));
+    display:grid; place-items:center;
+    font-weight:900;
+    letter-spacing:.5px;
+  }
+  .brand h1{ margin:0; font-size: 18px; font-weight: 900; letter-spacing:.2px; }
+  .brand p{ margin:4px 0 0; color: var(--muted); line-height:1.35; font-size: 13px; }
+  .pillRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; align-items:center; }
+  .pill{
+    display:flex; gap:8px; align-items:center;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border:1px solid var(--border);
+    background: var(--panel2);
+    color: var(--muted);
+    font-size: 13px;
+    white-space:nowrap;
+  }
+  .pill strong{ color: var(--text); }
+  .btn{
+    border:1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    padding:10px 12px;
+    border-radius: 14px;
+    font-weight: 900;
+    cursor:pointer;
+    transition: transform .14s ease, border-color .14s ease, background .14s ease;
+    user-select:none;
+  }
+  .btn:hover{ transform: translateY(-1px); border-color: rgba(94,234,212,.35); }
+  .btn:active{ transform: translateY(0px); }
+  .btn.primary{
+    background: linear-gradient(90deg, rgba(94,234,212,.18), rgba(167,139,250,.18));
+    border-color: rgba(94,234,212,.24);
+  }
+  .btn.ghost{ background: transparent; }
+  .btn.small{ padding:8px 10px; border-radius: 12px; font-size: 12px; }
+  .btn.bad:hover{ border-color: rgba(251,113,133,.45); }
+  .btn.good:hover{ border-color: rgba(52,211,153,.45); }
+
+  .bar{
+    margin-top: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    overflow:hidden;
+  }
+  .bar > div{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg, rgba(94,234,212,.95), rgba(167,139,250,.95), rgba(96,165,250,.95));
+    border-radius: 999px;
+    transition: width .35s ease;
+  }
+
+  .grid{
+    margin-top: 14px;
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 980px){
+    .grid{ grid-template-columns: 1fr; }
+  }
+  .panel{ padding: 14px; }
+  .panelHead{
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 10px; margin-bottom: 10px;
+  }
+  .panelHead h2{
+    margin:0;
+    font-size: 12px;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .list{
+    max-height: calc(100vh - 230px);
+    overflow:auto;
+    padding-right: 4px;
+  }
+  .wkBtn{
+    width:100%;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.05);
+    border-radius: 18px;
+    padding: 12px 12px;
+    text-align:left;
+    cursor:pointer;
+    margin-bottom: 10px;
+    transition: transform .14s ease, border-color .14s ease, background .14s ease;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+  }
+  .wkBtn:hover{ transform: translateY(-1px); border-color: rgba(167,139,250,.35); }
+  .wkBtn.active{ border-color: rgba(94,234,212,.45); background: rgba(255,255,255,.07); }
+  .wkLeft{ display:flex; flex-direction:column; gap:4px; }
+  .wkTitle{ font-weight: 950; }
+  .wkSub{ font-size: 12px; color: var(--muted); line-height: 1.25; }
+  .wkRight{ display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+  .badge{
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: var(--muted);
+    white-space:nowrap;
+  }
+  .badge.done{ color: rgba(52,211,153,.95); border-color: rgba(52,211,153,.35); }
+  .badge.ip{ color: rgba(251,191,36,.95); border-color: rgba(251,191,36,.35); }
+  .badge.m0{ color: rgba(148,163,184,.95); }
+  .badge.m1{ color: rgba(96,165,250,.95); border-color: rgba(96,165,250,.35); }
+  .badge.m2{ color: rgba(167,139,250,.95); border-color: rgba(167,139,250,.35); }
+  .badge.m3{ color: rgba(94,234,212,.95); border-color: rgba(94,234,212,.35); }
+
+  .mainHead{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    gap: 12px; flex-wrap:wrap;
+    margin-bottom: 12px;
+  }
+  .path{ color: var(--muted2); font-size: 12px; }
+  .hTitle{ margin: 2px 0 0; font-size: 18px; font-weight: 950; }
+  .desc{ margin: 6px 0 0; color: var(--muted); line-height: 1.35; font-size: 13px; }
+  .krow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+  .card{
+    border:1px solid var(--border);
+    background: rgba(255,255,255,.04);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .two{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media(max-width: 860px){
+    .two{ grid-template-columns: 1fr; }
+  }
+  .q{
+    border:1px solid var(--border);
+    background: rgba(255,255,255,.03);
+    border-radius: var(--radius);
+    padding: 14px;
+    position:relative;
+    overflow:hidden;
+  }
+  .qTop{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .qTitle{ font-weight: 950; }
+  .qMeta{ margin-top: 4px; color: var(--muted); font-size: 12px; }
+  .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
+  input[type="text"], input[type="number"]{
+    background: rgba(0,0,0,.16);
+    border:1px solid var(--border);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 14px;
+    outline:none;
+    min-width: 170px;
+  }
+  input:focus{ box-shadow: var(--ring); border-color: rgba(94,234,212,.45); }
+  textarea{
+    width:100%;
+    min-height: 88px;
+    resize: vertical;
+    background: rgba(0,0,0,.16);
+    border:1px solid var(--border);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 14px;
+    outline:none;
+    margin-top: 8px;
+  }
+  .optGrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  @media(max-width: 600px){ .optGrid{ grid-template-columns: 1fr; } }
+  .opt{
+    border:1px solid var(--border);
+    background: rgba(255,255,255,.03);
+    padding: 10px 12px;
+    border-radius: 14px;
+    cursor:pointer;
+    font-weight: 900;
+    transition: transform .14s ease, border-color .14s ease;
+  }
+  .opt:hover{ transform: translateY(-1px); border-color: rgba(94,234,212,.32); }
+  .opt.sel{ border-color: rgba(167,139,250,.55); }
+  .feedback{
+    display:none;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border:1px solid var(--border);
+    background: rgba(255,255,255,.03);
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  .feedback.good{
+    display:block;
+    border-color: rgba(52,211,153,.35);
+    background: rgba(52,211,153,.06);
+    color: rgba(52,211,153,.95);
+  }
+  .feedback.bad{
+    display:block;
+    border-color: rgba(251,113,133,.35);
+    background: rgba(251,113,133,.06);
+    color: rgba(251,113,133,.95);
+  }
+  .feedback.warn{
+    display:block;
+    border-color: rgba(251,191,36,.35);
+    background: rgba(251,191,36,.06);
+    color: rgba(251,191,36,.95);
+  }
+  .hint{
+    display:none;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .tiny{ font-size: 12px; color: var(--muted); }
+  .hr{ height:1px; background: rgba(255,255,255,.10); margin: 12px 0; }
+
+  /* Confetti (tiny) */
+  .confetti{
+    position:fixed; inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    display:none;
+  }
+  .confetti.on{ display:block; }
+  .c{
+    position:absolute;
+    width:10px;height:14px;
+    border-radius: 4px;
+    opacity:.95;
+    transform: translateY(-20px) rotate(0deg);
+    animation: fall 900ms ease-in forwards;
+  }
+  @keyframes fall{
+    to{ transform: translateY(110vh) rotate(540deg); opacity:0.9; }
+  }
 </style>
 </head>
 
 <body>
 <div class="wrap">
-<h1>🧠 Kaylyn Math Lab</h1>
-<p>Interactive math • Khan-style checks</p>
+  <section class="glass top">
+    <div class="topRow">
+      <div class="brand">
+        <div class="logo">K</div>
+        <div>
+          <h1>Kaylyn Math — Studio</h1>
+          <p>Grade 3+ • 20-week track • adaptive practice • robust answer checking</p>
+        </div>
+      </div>
+      <div class="pillRow">
+        <div class="pill">Weeks done: <strong id="doneLabel">0/20</strong></div>
+        <div class="pill">XP: <strong id="xpLabel">0</strong></div>
+        <div class="pill">Streak: <strong id="streakLabel">0</strong></div>
+        <button class="btn small" id="themeBtn" title="Toggle light/dark">Theme</button>
+        <button class="btn small" id="exportBtn">Export</button>
+        <button class="btn small" id="importBtn">Import</button>
+        <button class="btn small bad" id="resetBtn">Reset</button>
+      </div>
+    </div>
+    <div class="bar"><div id="progressBar"></div></div>
+  </section>
 
-<div class="grid">
-  <div>
-    <h3>Weeks</h3>
-    <div id="weeks"></div>
-  </div>
+  <section class="grid">
+    <aside class="glass panel">
+      <div class="panelHead">
+        <h2>Course</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+          <button class="btn small ghost" id="practiceBtn">Adaptive practice</button>
+          <button class="btn small ghost" id="dashboardBtn">Parent dashboard</button>
+        </div>
+      </div>
+      <div class="list" id="weekList"></div>
+    </aside>
 
-  <div>
-    <h3 id="title">Choose a week</h3>
-    <div id="content"></div>
-  </div>
+    <main class="glass panel">
+      <div class="mainHead">
+        <div>
+          <div class="path" id="pathLabel">Pick a week</div>
+          <div class="hTitle" id="titleLabel">Welcome</div>
+          <div class="desc" id="descLabel">This platform generates fresh variations and saves progress on this device.</div>
+          <div class="krow">
+            <div class="pill">Skill: <strong id="skillLabel">—</strong></div>
+            <div class="pill">Mastery: <strong id="masteryLabel">—</strong></div>
+            <div class="pill">Seed: <strong id="seedLabel">—</strong></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+          <div class="badge" id="weekStatus">—</div>
+          <button class="btn small primary" id="newSetBtn" title="New variations for this week">New set</button>
+        </div>
+      </div>
+
+      <div class="card" id="messageCard">
+        <div class="tiny">
+          Tip: expressions accept <b>x</b>, <b>×</b>, <b>*</b> and <b>÷</b>, <b>/</b>. We ignore spaces and commas.
+          After 2 wrong tries, you can reveal a step-by-step solution.
+        </div>
+      </div>
+
+      <div class="two" id="qWrap"></div>
+
+      <div class="card" id="explainCard" style="display:none">
+        <div class="hTitle">✍️ Explain your thinking (2–5 sentences)</div>
+        <div class="desc">Clarity is the superpower. This also helps you (and your parent) spot what to practice next.</div>
+        <textarea id="explainBox" placeholder="I started by… Then I noticed… I checked by…"></textarea>
+        <div class="krow" style="justify-content:space-between">
+          <button class="btn primary" id="saveExplainBtn">Save</button>
+          <div class="tiny" id="explainSaved">Not saved</div>
+        </div>
+      </div>
+
+      <div class="card" id="dashboard" style="display:none">
+        <div class="hTitle">📊 Parent dashboard</div>
+        <div class="desc">Accuracy, time, and weakest skills.</div>
+        <div class="hr"></div>
+        <div class="krow" id="dashStats"></div>
+        <div class="hr"></div>
+        <div class="tiny" id="dashWeak"></div>
+      </div>
+    </main>
+  </section>
 </div>
-</div>
+
+<div class="confetti" id="confetti"></div>
 
 <script>
-const weeks = Array.from({length:20},(_,i)=>"Week "+(i+1));
-const questions = {
-  0:[{
-    text:"Make 24 using exactly 3 numbers",
-    check:v=>{
-      try{
-        const e=v.replace(/×/g,"*").replace(/÷/g,"/");
-        const n=(e.match(/\\d+/g)||[]).length;
-        if(n!==3) return "Use exactly 3 numbers";
-        if(eval(e)===24) return true;
-        return "Does not equal 24";
-      }catch{return "Invalid expression";}
-    }
-  }],
-  1:[{
-    text:"Pattern: 3 → 7 → 15 → 31 → ?",
-    check:v=>Number(v)===63||"Try ×2 + 1"
-  }]
-};
+/* ============================================================
+   Kaylyn Math — Studio
+   - Single-file, no dependencies
+   - Seeded generators (infinite variations)
+   - Robust checkers (numeric, integer, fraction, expression)
+   - Mastery + adaptive practice + hints/solutions
+   - Local persistence + export/import
+============================================================ */
 
-const wEl=document.getElementById("weeks");
-const cEl=document.getElementById("content");
-const tEl=document.getElementById("title");
+/* ---------------------------
+   Persistence
+--------------------------- */
+const STORE_KEY = "kaylyn_math_studio_v1";
+const now = () => Date.now();
 
-weeks.forEach((w,i)=>{
-  const b=document.createElement("button");
-  b.className="week";
-  b.textContent=w;
-  b.onclick=()=>loadWeek(i,b);
-  wEl.appendChild(b);
+const defaultState = () => ({
+  theme: "dark",
+  currentWeek: 0,
+  // weeks[weekIndex] = { setCounter, attempts: {qid:{value,status,tries}}, explain, timeMs, stats:{correct,wrong} }
+  weeks: {},
+  mastery: {}, // skillId -> {xp, level, streakBest, lastSeen}
+  totalXp: 0,
+  streak: 0,
+  streakBest: 0,
+  doneWeeks: {}, // weekIndex -> true
+  events: [] // {t, type, detail}
 });
 
-function loadWeek(i,btn){
-  document.querySelectorAll(".week").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  tEl.textContent=weeks[i];
-  cEl.innerHTML="";
-  (questions[i]||[]).forEach(q=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.innerHTML=`<div>${q.text}</div>
-      <input><button>Check</button><div></div>`;
-    const inp=d.querySelector("input");
-    const fb=d.querySelector("div:last-child");
-    d.querySelector("button").onclick=()=>{
-      const r=q.check(inp.value);
-      if(r===true){fb.textContent="Correct ✓";fb.className="good";}
-      else{fb.textContent=r;fb.className="bad";}
-    };
-    cEl.appendChild(d);
-  });
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return defaultState();
+    const s = JSON.parse(raw);
+    const merged = { ...defaultState(), ...s };
+    merged.weeks = s.weeks || {};
+    merged.mastery = s.mastery || {};
+    merged.doneWeeks = s.doneWeeks || {};
+    merged.events = s.events || [];
+    return merged;
+  }catch(e){
+    return defaultState();
+  }
 }
+function saveState(){
+  localStorage.setItem(STORE_KEY, JSON.stringify(state));
+}
+function logEvent(type, detail){
+  state.events.push({ t: now(), type, detail });
+  // keep small
+  if(state.events.length > 400) state.events = state.events.slice(-300);
+  saveState();
+}
+
+/* ---------------------------
+   Theme
+--------------------------- */
+const themeBtn = document.getElementById("themeBtn");
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme", state.theme === "light" ? "light" : "dark");
+}
+themeBtn.addEventListener("click", () => {
+  state.theme = state.theme === "light" ? "dark" : "light";
+  saveState();
+  applyTheme();
+});
+applyTheme();
+
+/* ---------------------------
+   Seeded RNG (stable variations)
+--------------------------- */
+function xmur3(str){
+  let h = 1779033703 ^ str.length;
+  for(let i=0;i<str.length;i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^= (h >>> 16)) >>> 0;
+  };
+}
+function mulberry32(a){
+  return function(){
+    let t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function seededRand(seedStr){
+  const seed = xmur3(seedStr)();
+  return mulberry32(seed);
+}
+function rInt(r, a, b){ return Math.floor(r() * (b - a + 1)) + a; }
+function pick(r, arr){ return arr[Math.floor(r() * arr.length)]; }
+function shuffle(r, arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(r()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+/* ---------------------------
+   Robust parsing & checkers
+--------------------------- */
+function normalizeText(s){
+  return String(s ?? "")
+    .trim()
+    .replace(/[,\s]+/g, "")     // remove commas/spaces
+    .replace(/[–—]/g, "-");     // normalize dashes
+}
+function normalizeExpr(s){
+  return String(s ?? "")
+    .trim()
+    .replace(/[xX×]/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/[–—]/g, "-");
+}
+function isSafeExpr(s){
+  // digits, ops, parentheses, spaces, decimals
+  return /^[0-9+\-*/().\s]+$/.test(s);
+}
+function countNumbersInExpr(s){
+  const m = s.match(/\d+(\.\d+)?/g);
+  return m ? m.length : 0;
+}
+function evalExprSafe(expr){
+  const s = normalizeExpr(expr);
+  if(!s) throw new Error("empty");
+  if(!isSafeExpr(s)) throw new Error("unsafe");
+  if(s.includes("**")) throw new Error("unsafe");
+  // eslint-disable-next-line no-new-func
+  const fn = Function(`"use strict"; return (${s});`);
+  const v = fn();
+  if(!Number.isFinite(v)) throw new Error("notfinite");
+  return v;
+}
+function approxEq(a,b,eps=1e-9){ return Math.abs(a-b) < eps; }
+
+function parseFraction(s){
+  // Accept "a/b" or "a b/c" (mixed number) or "0.5"
+  const t = String(s ?? "").trim();
+  if(!t) return null;
+
+  // mixed: "1 2/3"
+  const mixed = t.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+  if(mixed){
+    const whole = Number(mixed[1]);
+    const num = Number(mixed[2]);
+    const den = Number(mixed[3]);
+    if(den===0) return null;
+    const sign = whole < 0 ? -1 : 1;
+    const absWhole = Math.abs(whole);
+    return (absWhole + (num/den)) * sign;
+  }
+
+  // simple fraction "a/b"
+  const frac = t.match(/^(-?\d+)\s*\/\s*(\d+)$/);
+  if(frac){
+    const num = Number(frac[1]);
+    const den = Number(frac[2]);
+    if(den===0) return null;
+    return num/den;
+  }
+
+  // decimal/integer
+  const n = Number(t);
+  if(Number.isFinite(n)) return n;
+  return null;
+}
+
+const Checkers = {
+  number(expected, opts={}){
+    const eps = opts.eps ?? 0;
+    return (raw) => {
+      const t = normalizeText(raw);
+      if(!t) return { ok:false, msg:"Enter an answer." };
+      const n = Number(t);
+      if(!Number.isFinite(n)) return { ok:false, msg:"Enter a number." };
+      const ok = eps ? Math.abs(n-expected) <= eps : n === expected;
+      return ok ? { ok:true } : { ok:false, msg:"Not quite. Try again." };
+    };
+  },
+  integer(expected){
+    return (raw) => {
+      const t = normalizeText(raw);
+      if(!t) return { ok:false, msg:"Enter an answer." };
+      if(!/^-?\d+$/.test(t)) return { ok:false, msg:"Enter a whole number." };
+      const n = Number(t);
+      return (n===expected) ? { ok:true } : { ok:false, msg:"Not quite. Try again." };
+    };
+  },
+  oneOf(validSet){
+    const set = new Set(validSet.map(v=>String(v)));
+    return (raw) => {
+      const t = String(raw ?? "").trim();
+      if(!t) return { ok:false, msg:"Enter an answer." };
+      return set.has(t) ? { ok:true } : { ok:false, msg:"Try a different form." };
+    };
+  },
+  fractionEquals(expectedValue){
+    return (raw) => {
+      const v = parseFraction(raw);
+      if(v === null) return { ok:false, msg:"Type a fraction like 3/4 (or a decimal)." };
+      return approxEq(v, expectedValue, 1e-9)
+        ? { ok:true }
+        : { ok:false, msg:"Not quite. Check numerator/denominator." };
+    };
+  },
+  exprEquals(target, opts={}){
+    const exactlyNums = opts.exactlyNums ?? null;
+    return (raw) => {
+      const s = normalizeExpr(raw);
+      if(!s) return { ok:false, msg:"Type an expression (example: (5+7)*2)." };
+      if(!isSafeExpr(s)) return { ok:false, msg:"Use only numbers and + - × ÷ ( )" };
+      if(exactlyNums != null){
+        const c = countNumbersInExpr(s);
+        if(c !== exactlyNums) return { ok:false, msg:`Use exactly ${exactlyNums} numbers (you used ${c}).` };
+      }
+      try{
+        const val = evalExprSafe(s);
+        if(approxEq(val, target, 1e-9)) return { ok:true };
+        return { ok:false, msg:`That equals ${val}, not ${target}.` };
+      }catch(e){
+        return { ok:false, msg:"Invalid expression. Check parentheses and operators." };
+      }
+    };
+  }
+};
+
+/* ---------------------------
+   Confetti
+--------------------------- */
+const confettiEl = document.getElementById("confetti");
+function popConfetti(){
+  confettiEl.innerHTML = "";
+  confettiEl.classList.add("on");
+  const colors = ["rgba(94,234,212,.95)","rgba(167,139,250,.95)","rgba(96,165,250,.95)","rgba(251,191,36,.95)","rgba(52,211,153,.95)"];
+  for(let i=0;i<26;i++){
+    const d = document.createElement("div");
+    d.className = "c";
+    d.style.left = Math.random()*100 + "vw";
+    d.style.top = "-20px";
+    d.style.background = colors[Math.floor(Math.random()*colors.length)];
+    d.style.animationDuration = (650 + Math.random()*650) + "ms";
+    d.style.transform = `translateY(-20px) rotate(${Math.random()*60}deg)`;
+    confettiEl.appendChild(d);
+  }
+  setTimeout(()=>confettiEl.classList.remove("on"), 950);
+}
+
+/* ---------------------------
+   Course Map (20 weeks)
+--------------------------- */
+const Weeks = [
+  { title:"Week 1 — Flexible Numbers", desc:"Make numbers many ways. Expressions. Mental math.", skill:"flex" },
+  { title:"Week 2 — Patterns & Rules", desc:"Find the rule, extend, create your own.", skill:"patterns" },
+  { title:"Week 3 — Add/Sub with Structure", desc:"Regrouping, compensation, checking.", skill:"addsub" },
+  { title:"Week 4 — Multi-digit Multiplication", desc:"2–4 digit × 1–2 digit using strategies.", skill:"mult" },
+  { title:"Week 5 — Division & Remainders", desc:"Long division thinking and interpretation.", skill:"div" },
+  { title:"Week 6 — Word Problems", desc:"Identify operation, show steps, label units.", skill:"word" },
+  { title:"Week 7 — Estimation", desc:"Round, sanity check, bounds.", skill:"estimate" },
+  { title:"Week 8 — Time", desc:"Elapsed time, schedules, clocks.", skill:"time" },
+  { title:"Week 9 — Money", desc:"Change-making, totals, comparisons.", skill:"money" },
+  { title:"Week10 — Fractions Intro", desc:"Fractions as numbers, part/whole.", skill:"frac_intro" },
+  { title:"Week11 — Equivalent Fractions", desc:"Scale, simplify, number lines.", skill:"frac_equiv" },
+  { title:"Week12 — Compare Fractions", desc:"Compare without guessing.", skill:"frac_comp" },
+  { title:"Week13 — Area & Perimeter", desc:"Rectangles, same area different perimeter.", skill:"area" },
+  { title:"Week14 — Geometry", desc:"Angles, symmetry, shapes.", skill:"geo" },
+  { title:"Week15 — Data & Graphs", desc:"Read charts, tables, create graphs.", skill:"data" },
+  { title:"Week16 — Early Algebra", desc:"Unknowns, balance, function machines.", skill:"alg" },
+  { title:"Week17 — Mixed Review", desc:"Interleaving builds durable skill.", skill:"review" },
+  { title:"Week18 — Challenge Sets", desc:"Harder puzzles, logic, multi-step.", skill:"challenge" },
+  { title:"Week19 — Teach Back", desc:"Explain clearly; find gaps.", skill:"teach" },
+  { title:"Week20 — Capstone Creator", desc:"Create + solve your own problems.", skill:"capstone" },
+];
+
+/* ---------------------------
+   Mastery model
+--------------------------- */
+function getMastery(skillId){
+  if(!state.mastery[skillId]){
+    state.mastery[skillId] = { xp:0, level:0, lastSeen:0 };
+  }
+  return state.mastery[skillId];
+}
+function masteryLevelFromXp(xp){
+  if(xp >= 260) return 3;
+  if(xp >= 140) return 2;
+  if(xp >= 60)  return 1;
+  return 0;
+}
+function masteryBadge(level){
+  if(level>=3) return { text:"Mastery 3", cls:"m3" };
+  if(level===2) return { text:"Mastery 2", cls:"m2" };
+  if(level===1) return { text:"Mastery 1", cls:"m1" };
+  return { text:"Mastery 0", cls:"m0" };
+}
+function award(skillId, correct){
+  const m = getMastery(skillId);
+  if(correct){
+    state.streak = (state.streak||0) + 1;
+    state.streakBest = Math.max(state.streakBest||0, state.streak);
+    const gain = 8 + Math.min(10, state.streak); // 9..18
+    m.xp += gain;
+    state.totalXp += gain;
+    m.level = masteryLevelFromXp(m.xp);
+    m.lastSeen = now();
+  }else{
+    state.streak = 0;
+  }
+  saveState();
+}
+
+/* ---------------------------
+   Week state helpers
+--------------------------- */
+function weekState(i){
+  if(!state.weeks[i]){
+    state.weeks[i] = { setCounter:0, attempts:{}, explain:"", timeMs:0, stats:{correct:0, wrong:0} };
+  }
+  if(!state.weeks[i].attempts) state.weeks[i].attempts = {};
+  if(!state.weeks[i].stats) state.weeks[i].stats = {correct:0, wrong:0};
+  return state.weeks[i];
+}
+
+function dayKey(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+}
+function weekSeed(i){
+  const ws = weekState(i);
+  return `w${i}-${dayKey()}-set${ws.setCounter||0}`;
+}
+
+/* ---------------------------
+   Problem generators (lots of “all possibilities” via variations)
+   Each generator returns a question object:
+   { id, type, prompt, hint, solution, checker, skillId }
+--------------------------- */
+function genFlex(r){
+  const target = pick(r, [24, 18, 36, 30, 28, 42]);
+  const exactly = 3;
+  return [
+    {
+      id:"exprTarget",
+      type:"expr",
+      skillId:"flex",
+      prompt:`Make <b>${target}</b> using exactly <b>${exactly}</b> numbers. (Examples: (5+7)*2, 8×3×1, (10-2)*3)`,
+      hint:"Use factor pairs (like 6×4), or (a+b)×c, or (a×b)±c.",
+      solution:`Example: If ${target}=24 → (5+7)*2 or 8*3*1. Try factor pairs or grouping.`,
+      checker: Checkers.exprEquals(target, { exactlyNums: exactly })
+    },
+    {
+      id:"factPairs",
+      type:"integer",
+      skillId:"flex",
+      prompt:`How many factor pairs does <b>${target}</b> have? (Example: 24 has 4 pairs)`,
+      hint:"Count divisors up to √n. Each divisor gives one pair.",
+      solution:`Count a=1..√${target} where ${target}%a=0.`,
+      checker: (raw) => {
+        let count=0;
+        for(let a=1;a<=Math.floor(Math.sqrt(target));a++){
+          if(target % a === 0) count++;
+        }
+        return Checkers.integer(count)(raw);
+      }
+    }
+  ];
+}
+
+function genPatterns(r){
+  const a = rInt(r, 2, 9);
+  const mul = pick(r, [2,3]);
+  const add = rInt(r, 1, 5);
+  const p1 = a;
+  const p2 = p1*mul + add;
+  const p3 = p2*mul + add;
+  const p4 = p3*mul + add;
+  const p5 = p4*mul + add;
+  return [
+    {
+      id:"next",
+      type:"integer",
+      skillId:"patterns",
+      prompt:`Pattern: <b>${p1} → ${p2} → ${p3} → ${p4} → ?</b>`,
+      hint:"Try multiply then add (same each step).",
+      solution:`Rule: ×${mul} then +${add}. Next is ${p5}.`,
+      checker: Checkers.integer(p5)
+    },
+    {
+      id:"rule",
+      type:"text",
+      skillId:"patterns",
+      prompt:`Write the rule in words (one sentence).`,
+      hint:"Example: “Multiply by __ then add __.”",
+      solution:`A strong answer: “Multiply by ${mul} then add ${add}.”`,
+      checker: (raw) => {
+        const t = String(raw??"").trim();
+        return t.length>=10 ? { ok:true } : { ok:false, msg:"Write one full sentence." };
+      }
+    }
+  ];
+}
+
+function genAddSub(r){
+  // Grade 3-ish: 3–4 digit add/sub with regrouping
+  const a = rInt(r, 1200, 9800);
+  const b = rInt(r, 120, 3900);
+  const op = pick(r, ["+","-"]);
+  const ans = op==="+" ? a+b : a-b;
+  const prompt = op==="+" ? `Compute: <b>${a} + ${b}</b>` : `Compute: <b>${a} − ${b}</b>`;
+  const hint = op==="+" ? "Add ones/tens/hundreds with regrouping." : "Subtract with borrowing (regrouping).";
+  return [
+    { id:"calc", type:"integer", skillId:"addsub", prompt, hint, solution:`Answer: ${ans}`, checker: Checkers.integer(ans) },
+    { id:"check", type:"mcq", skillId:"addsub",
+      prompt:`Best way to check your answer quickly?`,
+      hint:"Inverse operation catches most mistakes.",
+      solution:"Use the inverse (subtract to check addition, add to check subtraction).",
+      options: ["Use the inverse operation", "Just guess", "Do nothing", "Only use calculator"],
+      correctIndex: 0
+    }
+  ];
+}
+
+function genMult(r){
+  // Multi-digit multiplication variations up to 4 digits x 1–2 digits
+  const a = rInt(r, 1200, 9999);
+  const b = rInt(r, 12, 99);
+  const ans = a*b;
+  // estimation: round to nearest 10/100
+  const aR = Math.round(a/100)*100;
+  const bR = Math.round(b/10)*10;
+  const est = aR*bR;
+  return [
+    { id:"mul", type:"integer", skillId:"mult",
+      prompt:`Multiply: <b>${a} × ${b}</b>`,
+      hint:"Break the 2-digit number: (tens + ones).",
+      solution:`Use distributive property: ${a}×(${Math.floor(b/10)*10}+${b%10}). Answer: ${ans}`,
+      checker: Checkers.integer(ans)
+    },
+    { id:"est", type:"integer", skillId:"mult",
+      prompt:`Estimate first: round ${a} to nearest 100 and ${b} to nearest 10, then multiply.`,
+      hint:`${a}≈${aR}, ${b}≈${bR}.`,
+      solution:`Estimate: ${aR}×${bR}=${est}.`,
+      checker: Checkers.integer(est)
+    }
+  ];
+}
+
+function genDiv(r){
+  const divisor = pick(r, [3,4,5,6,7,8,9,12]);
+  const q = rInt(r, 20, 120);
+  const n = divisor*q + pick(r,[0,1,2,3,4]); // allow remainder
+  const quotient = Math.floor(n/divisor);
+  const rem = n - quotient*divisor;
+  return [
+    { id:"quo", type:"integer", skillId:"div",
+      prompt:`Divide: <b>${n} ÷ ${divisor}</b> — enter the quotient only.`,
+      hint:"Think: how many groups of divisor fit?",
+      solution:`${divisor}×${quotient}=${quotient*divisor}, remainder ${rem}.`,
+      checker: Checkers.integer(quotient)
+    },
+    { id:"rem", type:"integer", skillId:"div",
+      prompt:`Same problem: enter the remainder only.`,
+      hint:"Remainder = what’s left after divisor×quotient.",
+      solution:`Remainder is ${rem}.`,
+      checker: Checkers.integer(rem)
+    }
+  ];
+}
+
+function genWord(r){
+  const type = pick(r, ["mult","add","div"]);
+  if(type==="mult"){
+    const rows = rInt(r, 3, 9);
+    const per = rInt(r, 6, 14);
+    const ans = rows*per;
+    return [{
+      id:"wp",
+      type:"integer",
+      skillId:"word",
+      prompt:`Word problem: Kaylyn has <b>${rows}</b> boxes with <b>${per}</b> stickers each. How many stickers total?`,
+      hint:"Total = groups × each group.",
+      solution:`${rows}×${per}=${ans}.`,
+      checker: Checkers.integer(ans)
+    }];
+  }
+  if(type==="add"){
+    const a = rInt(r, 120, 980);
+    const b = rInt(r, 120, 980);
+    const ans = a+b;
+    return [{
+      id:"wp",
+      type:"integer",
+      skillId:"word",
+      prompt:`Word problem: A library had <b>${a}</b> books and got <b>${b}</b> more. How many now?`,
+      hint:"More means add.",
+      solution:`${a}+${b}=${ans}.`,
+      checker: Checkers.integer(ans)
+    }];
+  }
+  const total = rInt(r, 60, 180);
+  const groups = pick(r, [3,4,5,6,8,9,10,12]);
+  const q = Math.floor(total/groups);
+  const rem = total - q*groups;
+  return [{
+    id:"wp",
+    type:"text",
+    skillId:"word",
+    prompt:`Word problem: <b>${total}</b> cookies are shared equally among <b>${groups}</b> kids. Write the quotient and remainder like “q r”. (Example: 7 r 2)`,
+    hint:"Quotient = how many each. Remainder = leftovers.",
+    solution:`${total}÷${groups} = ${q} remainder ${rem} → "${q} r ${rem}".`,
+    checker: (raw) => {
+      const t = String(raw??"").trim().toLowerCase().replace(/\s+/g," ");
+      const ok = t === `${q} r ${rem}` || t === `${q}r${rem}` || t === `${q} remainder ${rem}` || t === `${q} rem ${rem}`;
+      return ok ? { ok:true } : { ok:false, msg:`Try format: ${q} r ${rem}` };
+    }
+  }];
+}
+
+function genEstimate(r){
+  const a = rInt(r, 40, 990);
+  const b = rInt(r, 40, 990);
+  const a10 = Math.round(a/10)*10;
+  const b10 = Math.round(b/10)*10;
+  const est = a10 + b10;
+  const exact = a + b;
+  return [
+    { id:"est", type:"integer", skillId:"estimate",
+      prompt:`Estimate: round <b>${a}</b> and <b>${b}</b> to nearest 10, then add.`,
+      hint:`${a}≈${a10}, ${b}≈${b10}.`,
+      solution:`Estimate: ${a10}+${b10}=${est}.`,
+      checker: Checkers.integer(est)
+    },
+    { id:"exact", type:"integer", skillId:"estimate",
+      prompt:`Now compute exact: <b>${a}+${b}</b>.`,
+      hint:"Exact addition with regrouping if needed.",
+      solution:`Exact: ${exact}. Estimate should be close.`,
+      checker: Checkers.integer(exact)
+    }
+  ];
+}
+
+function genTime(r){
+  const h1 = rInt(r,1,11);
+  const m1 = pick(r,[0,10,15,20,30,40,45,50]);
+  const addMin = pick(r,[15,20,25,30,35,40,45,50,60,75,90]);
+  const start = h1*60+m1;
+  const end = start + addMin;
+  const h2 = Math.floor((end/60)%12) || 12;
+  const m2 = end%60;
+  const fmt = (h,m)=>`${h}:${String(m).padStart(2,'0')}`;
+  return [{
+    id:"elapsed",
+    type:"text",
+    skillId:"time",
+    prompt:`Time: Starting at <b>${fmt(h1,m1)}</b>, add <b>${addMin}</b> minutes. What time is it? (format h:mm)`,
+    hint:"Add minutes, carry to next hour if needed.",
+    solution:`${fmt(h2,m2)}.`,
+    checker:(raw)=>{
+      const t = String(raw??"").trim();
+      const ok = t === fmt(h2,m2);
+      return ok ? { ok:true } : { ok:false, msg:`Expected format h:mm. Try again.` };
+    }
+  }];
+}
+
+function genMoney(r){
+  const cost = pick(r,[1.25, 2.40, 3.75, 4.10, 5.60, 6.95]);
+  const paid = pick(r,[10,20]);
+  const change = Number((paid - cost).toFixed(2));
+  return [{
+    id:"change",
+    type:"number",
+    skillId:"money",
+    prompt:`Money: Something costs <b>$${cost.toFixed(2)}</b>. You pay <b>$${paid.toFixed(2)}</b>. How much change?`,
+    hint:"Change = paid − cost.",
+    solution:`$${paid.toFixed(2)} − $${cost.toFixed(2)} = $${change.toFixed(2)}.`,
+    checker: Checkers.number(change, { eps: 0.00001 })
+  }];
+}
+
+function genFracIntro(r){
+  const den = pick(r,[2,3,4,5,6,8,10,12]);
+  const num = rInt(r,1,den-1);
+  const val = num/den;
+  return [{
+    id:"decimal",
+    type:"number",
+    skillId:"frac_intro",
+    prompt:`Fractions: What is <b>${num}/${den}</b> as a decimal? (2 decimals ok)`,
+    hint:"Divide numerator by denominator.",
+    solution:`${num}/${den} = ${val}.`,
+    checker: (raw) => {
+      const t = String(raw??"").trim();
+      if(!t) return { ok:false, msg:"Enter a decimal." };
+      const n = Number(t);
+      if(!Number.isFinite(n)) return { ok:false, msg:"Enter a number." };
+      return Math.abs(n - val) <= 0.02 ? { ok:true } : { ok:false, msg:"Close, but not quite. Try dividing." };
+    }
+  }];
+}
+
+function genFracEquiv(r){
+  const base = pick(r, [[1,2],[1,3],[2,3],[3,4],[2,5],[3,5],[4,6]]);
+  const k = pick(r,[2,3,4,5]);
+  const n = base[0]*k, d = base[1]*k;
+  return [
+    { id:"simpN", type:"integer", skillId:"frac_equiv",
+      prompt:`Simplify <b>${n}/${d}</b>. Enter the numerator.`,
+      hint:"Divide top and bottom by the same number.",
+      solution:`Divide by ${k} → ${base[0]}/${base[1]}.`,
+      checker: Checkers.integer(base[0])
+    },
+    { id:"simpD", type:"integer", skillId:"frac_equiv",
+      prompt:`Simplify <b>${n}/${d}</b>. Enter the denominator.`,
+      hint:"Same division as numerator.",
+      solution:`Divide by ${k}.`,
+      checker: Checkers.integer(base[1])
+    }
+  ];
+}
+
+function genFracComp(r){
+  const fr = pick(r, [
+    [[3,4],[5,8]],
+    [[2,3],[3,5]],
+    [[4,6],[3,4]],
+    [[5,6],[7,9]],
+    [[3,8],[2,5]],
+  ]);
+  const A = fr[0], B = fr[1];
+  const vA = A[0]/A[1], vB = B[0]/B[1];
+  const correct = vA > vB ? "A" : "B";
+  return [{
+    id:"bigger",
+    type:"mcq",
+    skillId:"frac_comp",
+    prompt:`Which is bigger? <b>A = ${A[0]}/${A[1]}</b> or <b>B = ${B[0]}/${B[1]}</b>`,
+    hint:"Compare distance to 1 or cross-multiply.",
+    solution:`A≈${vA.toFixed(3)}, B≈${vB.toFixed(3)} → ${correct} is bigger.`,
+    options: ["A","B"],
+    correctIndex: correct==="A" ? 0 : 1
+  }];
+}
+
+function genArea(r){
+  const w = rInt(r, 3, 12);
+  const h = rInt(r, 3, 12);
+  const area = w*h;
+  const per = 2*(w+h);
+  return [
+    { id:"area", type:"integer", skillId:"area",
+      prompt:`Rectangle <b>${w}×${h}</b>: Area = ?`,
+      hint:"Area = length×width.",
+      solution:`${w}×${h}=${area}.`,
+      checker: Checkers.integer(area)
+    },
+    { id:"per", type:"integer", skillId:"area",
+      prompt:`Rectangle <b>${w}×${h}</b>: Perimeter = ?`,
+      hint:"Perimeter = 2(w+h).",
+      solution:`2(${w}+${h})=${per}.`,
+      checker: Checkers.integer(per)
+    }
+  ];
+}
+
+function genGeo(r){
+  const angle = pick(r, [30,45,60,90,120,135,150]);
+  const type = angle<90 ? "acute" : angle===90 ? "right" : "obtuse";
+  return [{
+    id:"angle",
+    type:"mcq",
+    skillId:"geo",
+    prompt:`An angle of <b>${angle}°</b> is…`,
+    hint:"Acute < 90, Right = 90, Obtuse > 90.",
+    solution:`${angle}° is ${type}.`,
+    options: ["acute","right","obtuse"],
+    correctIndex: type==="acute"?0:type==="right"?1:2
+  }];
+}
+
+function genData(r){
+  const vals = [rInt(r,2,9), rInt(r,2,9), rInt(r,2,9), rInt(r,2,9)];
+  const labels = ["Apples","Oranges","Bananas","Grapes"];
+  const max = Math.max(...vals);
+  const idx = vals.indexOf(max);
+  return [{
+    id:"chart",
+    type:"mcq",
+    skillId:"data",
+    prompt:`Data: A chart shows counts: ${labels.map((l,i)=>`<b>${l}</b> ${vals[i]}`).join(" • ")}. Which is the greatest?`,
+    hint:"Greatest means largest number.",
+    solution:`${labels[idx]} has ${max}.`,
+    options: labels,
+    correctIndex: idx
+  }];
+}
+
+function genAlg(r){
+  const x = rInt(r, 8, 60);
+  const add = rInt(r, 4, 25);
+  const eq = x+add;
+  return [{
+    id:"box",
+    type:"integer",
+    skillId:"alg",
+    prompt:`Solve: <b>□ + ${add} = ${eq}</b>. Enter □.`,
+    hint:"Undo + by subtracting.",
+    solution:`${eq}−${add}=${x}.`,
+    checker: Checkers.integer(x)
+  }];
+}
+
+function genReview(r){
+  // Mix of 3 skills
+  const gens = [genAddSub, genMult, genDiv, genFracEquiv, genArea];
+  return pick(r, gens)(r).slice(0,2);
+}
+
+function genChallenge(r){
+  // rectangles count in grid (nice puzzle)
+  const rows = pick(r,[2,3,4]);
+  const cols = pick(r,[3,4,5]);
+  const rects = (rows*(rows+1)/2) * (cols*(cols+1)/2);
+  return [{
+    id:"rects",
+    type:"integer",
+    skillId:"challenge",
+    prompt:`Challenge: How many rectangles in a <b>${rows}×${cols}</b> grid of squares?`,
+    hint:"Formula: (r(r+1)/2)×(c(c+1)/2).",
+    solution:`(${rows}×${rows+1}/2)×(${cols}×${cols+1}/2) = ${rects}.`,
+    checker: Checkers.integer(rects)
+  }];
+}
+
+function genTeach(r){
+  return [{
+    id:"teach",
+    type:"text",
+    skillId:"teach",
+    prompt:`Teach-back: Explain a strategy you used today in 2–5 sentences.`,
+    hint:"Example: “I used distributive property…”",
+    solution:"Clear explanation is the goal.",
+    checker:(raw)=> String(raw??"").trim().length>=20 ? { ok:true } : { ok:false, msg:"Write at least 2 sentences." }
+  }];
+}
+
+function genCapstone(r){
+  return [
+    {
+      id:"create",
+      type:"text",
+      skillId:"capstone",
+      prompt:`Capstone: Write your own word problem (1–2 sentences).`,
+      hint:"Include numbers and a clear question.",
+      solution:"Original problem required.",
+      checker:(raw)=> String(raw??"").trim().length>=25 ? { ok:true } : { ok:false, msg:"Write 1–2 full sentences." }
+    },
+    {
+      id:"solve",
+      type:"text",
+      skillId:"capstone",
+      prompt:`Capstone: Solve your problem with steps (2–6 sentences).`,
+      hint:"Show the operation and why.",
+      solution:"Explain steps.",
+      checker:(raw)=> String(raw??"").trim().length>=35 ? { ok:true } : { ok:false, msg:"Write at least 2–3 sentences with steps." }
+    }
+  ];
+}
+
+const WeekGenerators = [
+  (r)=>genFlex(r),
+  (r)=>genPatterns(r),
+  (r)=>genAddSub(r),
+  (r)=>genMult(r),
+  (r)=>genDiv(r),
+  (r)=>genWord(r),
+  (r)=>genEstimate(r),
+  (r)=>genTime(r),
+  (r)=>genMoney(r),
+  (r)=>genFracIntro(r),
+  (r)=>genFracEquiv(r),
+  (r)=>genFracComp(r),
+  (r)=>genArea(r),
+  (r)=>genGeo(r),
+  (r)=>genData(r),
+  (r)=>genAlg(r),
+  (r)=>genReview(r),
+  (r)=>genChallenge(r),
+  (r)=>genTeach(r),
+  (r)=>genCapstone(r),
+];
+
+/* ---------------------------
+   UI Elements
+--------------------------- */
+const weekListEl = document.getElementById("weekList");
+const doneLabel = document.getElementById("doneLabel");
+const xpLabel = document.getElementById("xpLabel");
+const streakLabel = document.getElementById("streakLabel");
+const progressBar = document.getElementById("progressBar");
+
+const pathLabel = document.getElementById("pathLabel");
+const titleLabel = document.getElementById("titleLabel");
+const descLabel = document.getElementById("descLabel");
+const skillLabel = document.getElementById("skillLabel");
+const masteryLabel = document.getElementById("masteryLabel");
+const seedLabel = document.getElementById("seedLabel");
+const weekStatus = document.getElementById("weekStatus");
+const qWrap = document.getElementById("qWrap");
+
+const explainCard = document.getElementById("explainCard");
+const explainBox = document.getElementById("explainBox");
+const explainSaved = document.getElementById("explainSaved");
+const saveExplainBtn = document.getElementById("saveExplainBtn");
+
+const dashboard = document.getElementById("dashboard");
+const dashStats = document.getElementById("dashStats");
+const dashWeak = document.getElementById("dashWeak");
+
+const newSetBtn = document.getElementById("newSetBtn");
+const practiceBtn = document.getElementById("practiceBtn");
+const dashboardBtn = document.getElementById("dashboardBtn");
+const exportBtn = document.getElementById("exportBtn");
+const importBtn = document.getElementById("importBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+/* ---------------------------
+   Week completion
+--------------------------- */
+function questionsForWeek(i){
+  const ws = weekState(i);
+  const seed = weekSeed(i);
+  const r = seededRand(seed);
+  // each week = 4 questions by combining generators (some yield 1–2)
+  const gen = WeekGenerators[i] || WeekGenerators[0];
+  let qs = gen(r);
+  // ensure at least 4 by topping up with review/challenge depending on week
+  while(qs.length < 4){
+    const extra = (i<10 ? genReview(r) : genChallenge(r));
+    qs = qs.concat(extra);
+  }
+  // cap at 6 to keep focus (Apple: fewer, better)
+  return qs.slice(0,6).map((q, idx)=>({ ...q, order: idx }));
+}
+
+function weekCompletion(i){
+  const ws = weekState(i);
+  const qs = questionsForWeek(i);
+  let correct=0, attempted=0;
+  for(const q of qs){
+    const a = ws.attempts[q.id];
+    if(a && a.tries>0) attempted++;
+    if(a && a.status==="correct") correct++;
+  }
+  return { correct, attempted, total: qs.length, done: correct===qs.length && qs.length>0 };
+}
+
+/* ---------------------------
+   Top stats
+--------------------------- */
+function updateTop(){
+  let done = 0;
+  for(let i=0;i<Weeks.length;i++){
+    if(weekCompletion(i).done) done++;
+  }
+  doneLabel.textContent = `${done}/${Weeks.length}`;
+  xpLabel.textContent = `${state.totalXp||0}`;
+  streakLabel.textContent = `${state.streak||0}`;
+  progressBar.style.width = `${Math.round((done/Weeks.length)*100)}%`;
+}
+
+/* ---------------------------
+   Dashboard
+--------------------------- */
+function renderDashboard(){
+  const total = state.events.length;
+  const correct = state.events.filter(e=>e.type==="answer" && e.detail?.ok===true).length;
+  const wrong = state.events.filter(e=>e.type==="answer" && e.detail?.ok===false).length;
+  const acc = (correct+wrong) ? Math.round((correct/(correct+wrong))*100) : 0;
+
+  dashStats.innerHTML = "";
+  [
+    ["Total attempts", String(correct+wrong)],
+    ["Accuracy", acc + "%"],
+    ["Best streak", String(state.streakBest||0)],
+    ["XP", String(state.totalXp||0)],
+  ].forEach(([k,v])=>{
+    const el = document.createElement("div");
+    el.className = "pill";
+    el.innerHTML = `${k}: <strong>${v}</strong>`;
+    dashStats.appendChild(el);
+  });
+
+  // Weak skills by mastery
+  const skills = Weeks.map(w=>w.skill);
+  const rows = skills.map(s=>{
+    const m = getMastery(s);
+    return { s, lvl: m.level||0, xp: m.xp||0 };
+  }).sort((a,b)=> a.lvl-b.lvl || a.xp-b.xp);
+
+  const weak = rows.slice(0,5).map(r=>`${r.s} (L${r.lvl}, XP ${r.xp})`).join(" • ");
+  dashWeak.textContent = "Weakest skills: " + (weak || "No data yet.");
+}
+
+/* ---------------------------
+   Adaptive practice
+--------------------------- */
+function weakestWeekIndex(){
+  // choose week whose skill has lowest mastery
+  let bestIdx = 0;
+  let best = null;
+  for(let i=0;i<Weeks.length;i++){
+    const sk = Weeks[i].skill;
+    const m = getMastery(sk);
+    const cand = { i, lvl:m.level||0, xp:m.xp||0 };
+    if(!best || cand.lvl < best.lvl || (cand.lvl===best.lvl && cand.xp < best.xp)){
+      best = cand;
+      bestIdx = i;
+    }
+  }
+  return bestIdx;
+}
+
+/* ---------------------------
+   Render
+--------------------------- */
+let activeTimerStart = 0;
+
+function render(practiceMode=false){
+  // stop previous timer
+  if(activeTimerStart){
+    const ws = weekState(state.currentWeek);
+    ws.timeMs += (now() - activeTimerStart);
+  }
+  activeTimerStart = now();
+
+  // left week list
+  weekListEl.innerHTML = "";
+  for(let i=0;i<Weeks.length;i++){
+    const wk = Weeks[i];
+    const comp = weekCompletion(i);
+    const m = getMastery(wk.skill);
+    const mb = masteryBadge(m.level||0);
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "wkBtn" + (i===state.currentWeek ? " active" : "");
+    btn.innerHTML = `
+      <div class="wkLeft">
+        <div class="wkTitle">${wk.title}</div>
+        <div class="wkSub">${wk.desc}</div>
+      </div>
+      <div class="wkRight">
+        <div class="badge ${comp.done ? "done" : (comp.attempted ? "ip" : "")}">
+          ${comp.done ? "✓ Done" : (comp.attempted ? `${comp.correct}/${comp.total}` : "Not started")}
+        </div>
+        <div class="badge ${mb.cls}">${mb.text}</div>
+      </div>
+    `;
+    btn.addEventListener("click", ()=>{
+      state.currentWeek = i;
+      saveState();
+      render(false);
+    });
+    weekListEl.appendChild(btn);
+  }
+
+  // main header
+  const idx = state.currentWeek;
+  const wk = Weeks[idx];
+  const ws = weekState(idx);
+  const seed = weekSeed(idx);
+  const r = seededRand(seed);
+
+  pathLabel.textContent = practiceMode ? "Adaptive Practice" : "Course";
+  titleLabel.textContent = wk.title;
+  descLabel.textContent = wk.desc;
+  skillLabel.textContent = wk.skill;
+
+  const m = getMastery(wk.skill);
+  const mb = masteryBadge(m.level||0);
+  masteryLabel.textContent = `${mb.text} (XP ${m.xp||0})`;
+  seedLabel.textContent = seed.replaceAll("-", " · ");
+
+  const comp = weekCompletion(idx);
+  weekStatus.className = "badge " + (comp.done ? "done" : comp.attempted ? "ip" : "");
+  weekStatus.textContent = comp.done ? "✓ Week complete" : comp.attempted ? `${comp.correct}/${comp.total} correct` : "Not started";
+
+  // explain
+  explainCard.style.display = "block";
+  explainBox.value = ws.explain || "";
+  explainSaved.textContent = (ws.explain && ws.explain.trim()) ? "Saved ✓" : "Not saved";
+  explainSaved.style.color = (ws.explain && ws.explain.trim()) ? "rgba(52,211,153,.95)" : "var(--muted)";
+
+  // questions
+  const qs = questionsForWeek(idx);
+  qWrap.innerHTML = "";
+
+  qs.forEach((q)=>{
+    const attempt = ws.attempts[q.id] || { value:"", status:"", tries:0 };
+    const card = document.createElement("div");
+    card.className = "q";
+
+    const rightBadge = (() => {
+      if(attempt.status==="correct") return `<div class="badge done">✓ Correct</div>`;
+      if(attempt.tries>0) return `<div class="badge ip">In progress</div>`;
+      return `<div class="badge">—</div>`;
+    })();
+
+    const top = document.createElement("div");
+    top.className = "qTop";
+    top.innerHTML = `
+      <div>
+        <div class="qTitle">${q.prompt}</div>
+        <div class="qMeta">Skill <b>${q.skillId}</b> • Tries <b>${attempt.tries||0}</b></div>
+      </div>
+      ${rightBadge}
+    `;
+
+    const body = document.createElement("div");
+    body.style.marginTop = "10px";
+
+    const feedback = document.createElement("div");
+    feedback.className = "feedback";
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = q.hint || "";
+
+    let getValue = () => "";
+    let setValue = (v) => {};
+
+    // MCQ
+    if(q.type === "mcq"){
+      const opts = q.options || [];
+      const optGrid = document.createElement("div");
+      optGrid.className = "optGrid";
+      let selected = (attempt.value!=="" && attempt.value!=null) ? Number(attempt.value) : null;
+
+      opts.forEach((label, i)=>{
+        const b = document.createElement("button");
+        b.type="button";
+        b.className = "opt" + (selected===i ? " sel":"");
+        b.textContent = label;
+        b.addEventListener("click", ()=>{
+          selected = i;
+          [...optGrid.children].forEach((c, idx2)=>c.classList.toggle("sel", idx2===i));
+          ws.attempts[q.id] = { ...attempt, value: String(i) };
+          saveState();
+        });
+        optGrid.appendChild(b);
+      });
+      body.appendChild(optGrid);
+      getValue = () => selected==null ? "" : String(selected);
+    } else {
+      const input = document.createElement("input");
+      input.type = (q.type==="number") ? "number" : "text";
+      input.placeholder = (q.type==="expr") ? "Type an expression like (5+7)*2" : "Type answer…";
+      input.value = attempt.value || "";
+      input.addEventListener("input", ()=>{
+        ws.attempts[q.id] = { ...attempt, value: input.value, status: attempt.status, tries: attempt.tries };
+        saveState();
+      });
+      body.appendChild(input);
+      getValue = () => input.value;
+      setValue = (v) => { input.value = v; };
+    }
+
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const checkBtn = document.createElement("button");
+    checkBtn.className = "btn primary";
+    checkBtn.textContent = "Check";
+
+    const hintBtn = document.createElement("button");
+    hintBtn.className = "btn ghost";
+    hintBtn.textContent = "Hint";
+
+    const solBtn = document.createElement("button");
+    solBtn.className = "btn ghost";
+    solBtn.textContent = "Show steps";
+    solBtn.style.display = "none";
+
+    hintBtn.addEventListener("click", ()=>{
+      hint.style.display = (hint.style.display==="block") ? "none" : "block";
+    });
+
+    solBtn.addEventListener("click", ()=>{
+      feedback.className = "feedback warn";
+      feedback.textContent = q.solution || "No solution available.";
+      feedback.style.display = "block";
+    });
+
+    function setFeedback(kind, msg){
+      feedback.className = "feedback " + kind;
+      feedback.textContent = msg;
+      feedback.style.display = "block";
+    }
+
+    function check(){
+      const raw = getValue();
+      const prev = ws.attempts[q.id] || { value:"", status:"", tries:0 };
+      const tries = (prev.tries||0) + 1;
+
+      let res = { ok:false, msg:"Try again." };
+
+      // MCQ uses correctIndex
+      if(q.type==="mcq"){
+        const idx = Number(raw);
+        if(Number.isNaN(idx)) res = { ok:false, msg:"Choose an option." };
+        else res = (idx === q.correctIndex) ? { ok:true } : { ok:false, msg:"Not quite. Try again." };
+      }
+      // Text (simple)
+      else if(q.type==="text"){
+        const t = String(raw??"").trim();
+        if(!t) res = { ok:false, msg:"Write an answer." };
+        else if(q.checker) res = q.checker(raw);
+        else res = t.length>=15 ? { ok:true } : { ok:false, msg:"Write a little more." };
+      }
+      // Numeric / integer / expr
+      else{
+        res = q.checker ? q.checker(raw) : { ok:false, msg:"No checker." };
+      }
+
+      // record
+      logEvent("answer", { week: idx, qid: q.id, ok: !!res.ok });
+      if(res.ok){
+        ws.attempts[q.id] = { value: raw, status:"correct", tries };
+        ws.stats.correct++;
+        if(prev.status !== "correct") award(q.skillId, true);
+        setFeedback("good", "Correct ✅");
+        if(tries===1) popConfetti();
+      }else{
+        ws.attempts[q.id] = { value: raw, status:"wrong", tries };
+        ws.stats.wrong++;
+        award(q.skillId, false);
+        setFeedback("bad", res.msg || "Try again.");
+        if(tries >= 2) solBtn.style.display = "inline-block";
+      }
+
+      // mark week done
+      const c = weekCompletion(state.currentWeek);
+      if(c.done) state.doneWeeks[state.currentWeek] = true;
+
+      saveState();
+      updateTop();
+      render(practiceMode);
+    }
+
+    checkBtn.addEventListener("click", check);
+
+    row.appendChild(checkBtn);
+    row.appendChild(hintBtn);
+    row.appendChild(solBtn);
+
+    card.appendChild(top);
+    card.appendChild(body);
+    card.appendChild(row);
+    card.appendChild(feedback);
+    card.appendChild(hint);
+    qWrap.appendChild(card);
+  });
+
+  updateTop();
+}
+
+/* ---------------------------
+   Buttons
+--------------------------- */
+newSetBtn.addEventListener("click", ()=>{
+  const ws = weekState(state.currentWeek);
+  ws.setCounter = (ws.setCounter||0) + 1;
+  ws.attempts = {};
+  saveState();
+  render(false);
+});
+
+practiceBtn.addEventListener("click", ()=>{
+  const idx = weakestWeekIndex();
+  state.currentWeek = idx;
+  saveState();
+  render(true);
+});
+
+dashboardBtn.addEventListener("click", ()=>{
+  dashboard.style.display = dashboard.style.display==="none" ? "block" : "none";
+  if(dashboard.style.display==="block") renderDashboard();
+});
+
+saveExplainBtn.addEventListener("click", ()=>{
+  const ws = weekState(state.currentWeek);
+  ws.explain = explainBox.value;
+  saveState();
+  explainSaved.textContent = "Saved ✓";
+  explainSaved.style.color = "rgba(52,211,153,.95)";
+});
+
+exportBtn.addEventListener("click", ()=>{
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "kaylyn-math-studio-progress.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+importBtn.addEventListener("click", ()=>{
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+  input.onchange = async () => {
+    const file = input.files && input.files[0];
+    if(!file) return;
+    try{
+      const text = await file.text();
+      const obj = JSON.parse(text);
+      state = { ...defaultState(), ...obj };
+      saveState();
+      applyTheme();
+      render(false);
+      alert("Imported ✓");
+    }catch(e){
+      alert("Import failed. Make sure it is a valid exported JSON.");
+    }
+  };
+  input.click();
+});
+
+resetBtn.addEventListener("click", ()=>{
+  if(!confirm("Reset ALL progress on this device?")) return;
+  state = defaultState();
+  saveState();
+  applyTheme();
+  render(false);
+});
+
+/* ---------------------------
+   Boot
+--------------------------- */
+render(false);
 </script>
 </body>
 </html>
